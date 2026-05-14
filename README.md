@@ -243,7 +243,9 @@ Skill({ skill: "boardy-setup" })
 
 ## Syncing Specs from a Project
 
-When architecture rules evolve in a project's `.claude/rules/`, use `sync.sh` to pull them into this skill pack:
+When architecture rules evolve in a project's `.claude/rules/`, use `sync.sh` to pull them into this skill pack.
+
+> **AI-assisted sync:** After running `sync.sh`, ask an AI agent to follow [`SYNC_GUIDE.md`](SYNC_GUIDE.md) to determine which `SKILL.md` files need content updates based on what changed. `sync.sh` only copies files — the guide tells the AI which sections to review and what decisions to make.
 
 ```bash
 # Sync specs only (review diff before committing)
