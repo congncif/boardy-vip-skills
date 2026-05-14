@@ -1,5 +1,5 @@
 ---
-name: boardy-vip-quick-ref
+name: boardy-quick-ref
 description: Use when starting any iOS development task on a Boardy+VIP project — routes to correct spec, provides naming conventions, board communication patterns, and the 10 non-negotiable architecture rules
 ---
 

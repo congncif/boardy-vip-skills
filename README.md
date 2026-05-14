@@ -16,11 +16,11 @@ Claude Code skill pack for iOS projects built with [Boardy](https://github.com/c
 
 | Skill | Invoke as | When to use |
 |-------|-----------|-------------|
-| `boardy-vip-quick-ref` | Any architecture task | Master routing table, 10 rules, naming conventions, key patterns |
-| `boardy-vip-module` | Creating a new module | Module scaffold steps, podspec templates, LauncherPlugin wiring |
-| `boardy-vip-board` | Implementing any board | Board type decision tree, UI/Flow/Viewless/BlockTask patterns |
-| `boardy-vip-review` | Code review / PR verification | Complete architecture compliance checklist |
-| `boardy-vip-setup` | Brand-new project | Bootstrap CLAUDE.md, PROJECT_CONFIG.md, first module, validation |
+| `boardy-quick-ref` | Any architecture task | Master routing table, 10 rules, naming conventions, key patterns |
+| `boardy-module` | Creating a new module | Module scaffold steps, podspec templates, LauncherPlugin wiring |
+| `boardy-board` | Implementing any board | Board type decision tree, UI/Flow/Viewless/BlockTask patterns |
+| `boardy-review` | Code review / PR verification | Complete architecture compliance checklist |
+| `boardy-setup` | Brand-new project | Bootstrap CLAUDE.md, PROJECT_CONFIG.md, first module, validation |
 
 ### Templates
 
@@ -69,8 +69,8 @@ VIP: Interactor → UseCase → Presenter → ViewController
 ### Step 1 — Clone or download this repo
 
 ```bash
-git clone https://github.com/your-org/boardy-vip-skills.git
-cd boardy-vip-skills
+git clone https://github.com/your-org/boardy-skills.git
+cd boardy-skills
 ```
 
 ### Step 2 — Run install.sh
@@ -83,26 +83,26 @@ This copies skill files to `~/.claude/skills/`:
 
 ```
 ~/.claude/skills/
-├── boardy-vip-quick-ref/SKILL.md
-├── boardy-vip-module/SKILL.md
-├── boardy-vip-board/SKILL.md
-├── boardy-vip-review/SKILL.md
-└── boardy-vip-setup/SKILL.md
+├── boardy-quick-ref/SKILL.md
+├── boardy-module/SKILL.md
+├── boardy-board/SKILL.md
+├── boardy-review/SKILL.md
+└── boardy-setup/SKILL.md
 ```
 
 ### Step 3 — Verify installation
 
 ```bash
-ls ~/.claude/skills | grep boardy-vip
+ls ~/.claude/skills | grep boardy-
 ```
 
 Expected output:
 ```
-boardy-vip-board
-boardy-vip-module
-boardy-vip-quick-ref
-boardy-vip-review
-boardy-vip-setup
+boardy-board
+boardy-module
+boardy-quick-ref
+boardy-review
+boardy-setup
 ```
 
 ### Uninstall
@@ -125,9 +125,9 @@ Standard iOS app creation in Xcode. Close Xcode after creation.
 cd /path/to/your-new-project
 mkdir -p .claude/rules
 
-cp /path/to/boardy-vip-skills/templates/CLAUDE.md .
-cp /path/to/boardy-vip-skills/templates/PROJECT_CONFIG.md .claude/rules/
-cp /path/to/boardy-vip-skills/templates/PROJECT_STRUCTURE.md .claude/rules/
+cp /path/to/boardy-skills/templates/CLAUDE.md .
+cp /path/to/boardy-skills/templates/PROJECT_CONFIG.md .claude/rules/
+cp /path/to/boardy-skills/templates/PROJECT_STRUCTURE.md .claude/rules/
 ```
 
 ### 3. Fill PROJECT_CONFIG.md
@@ -182,7 +182,7 @@ mkdir -p submodules/Core
 
 Then open Claude Code and invoke:
 ```
-Skill({ skill: "boardy-vip-module" })
+Skill({ skill: "boardy-module" })
 ```
 
 Follow the module creation steps. Build to validate:
@@ -217,19 +217,19 @@ Skills are invoked via the `Skill` tool inside Claude Code sessions. Claude Code
 
 ```
 # At session start or before any architecture task
-Skill({ skill: "boardy-vip-quick-ref" })
+Skill({ skill: "boardy-quick-ref" })
 
 # Before creating a new module
-Skill({ skill: "boardy-vip-module" })
+Skill({ skill: "boardy-module" })
 
 # Before implementing a board
-Skill({ skill: "boardy-vip-board" })
+Skill({ skill: "boardy-board" })
 
 # Before reviewing a PR
-Skill({ skill: "boardy-vip-review" })
+Skill({ skill: "boardy-review" })
 
 # For a brand-new project
-Skill({ skill: "boardy-vip-setup" })
+Skill({ skill: "boardy-setup" })
 ```
 
 ### How Claude uses skills
@@ -294,7 +294,7 @@ The full architecture rules (specs) are embedded in the skill files and availabl
 ### Updating skills
 
 ```bash
-cd /path/to/boardy-vip-skills
+cd /path/to/boardy-skills
 git pull
 ./install.sh
 ```

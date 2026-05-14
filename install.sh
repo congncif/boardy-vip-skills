@@ -8,11 +8,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SOURCE_SKILLS="$SCRIPT_DIR/skills"
 
 SKILL_NAMES=(
-  "boardy-vip-quick-ref"
-  "boardy-vip-module"
-  "boardy-vip-board"
-  "boardy-vip-review"
-  "boardy-vip-setup"
+  "boardy-quick-ref"
+  "boardy-module"
+  "boardy-board"
+  "boardy-review"
+  "boardy-setup"
 )
 
 # ── Uninstall ──────────────────────────────────────────────────────────────────
@@ -60,11 +60,11 @@ for skill in "${SKILL_NAMES[@]}"; do
   echo "  - $skill"
 done
 echo ""
-echo "Verify with: ls $SKILLS_DIR | grep boardy-vip"
+echo "Verify with: ls $SKILLS_DIR | grep boardy-"
 echo ""
 echo "Usage in Claude Code:"
-echo "  Skill({ skill: \"boardy-vip-quick-ref\" })"
-echo "  Skill({ skill: \"boardy-vip-module\" })"
-echo "  Skill({ skill: \"boardy-vip-board\" })"
-echo "  Skill({ skill: \"boardy-vip-review\" })"
-echo "  Skill({ skill: \"boardy-vip-setup\" })"
+echo "  Skill({ skill: \"boardy-quick-ref\" })"
+echo "  Skill({ skill: \"boardy-module\" })"
+echo "  Skill({ skill: \"boardy-board\" })"
+echo "  Skill({ skill: \"boardy-review\" })"
+echo "  Skill({ skill: \"boardy-setup\" })"

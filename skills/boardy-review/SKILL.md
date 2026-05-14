@@ -1,5 +1,5 @@
 ---
-name: boardy-vip-review
+name: boardy-review
 description: Use when reviewing a pull request or verifying implementation on a Boardy+VIP project — provides the complete architecture compliance checklist covering VIP components, board lifecycle, IO/Sources access, communication patterns, and extensible provider rules
 ---
 

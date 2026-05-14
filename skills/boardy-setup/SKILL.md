@@ -1,5 +1,5 @@
 ---
-name: boardy-vip-setup
+name: boardy-setup
 description: Use when starting a brand-new iOS project with Boardy+VIP architecture — covers CLAUDE.md wiring, PROJECT_CONFIG.md setup, first module creation, and validation that the architecture is correctly bootstrapped
 ---
 
@@ -22,8 +22,8 @@ Setting up a new project requires wiring three layers:
 ## Step 1 — Install the Skill Pack Rules
 
 ```bash
-# Option A: Copy rules from boardy-vip-skills repo
-cp -r /path/to/boardy-vip-skills/templates/.claude /path/to/new-project/
+# Option A: Copy rules from boardy-skills repo
+cp -r /path/to/boardy-skills/templates/.claude /path/to/new-project/
 
 # Option B: Install from skill pack (if install.sh run)
 # Skills are already at ~/.claude/skills/ — rules templates need manual copy
@@ -94,7 +94,7 @@ end
 
 ## Step 6 — Create First Module
 
-Follow `boardy-vip-module` skill. The first module validates the full pipeline:
+Follow `boardy-module` skill. The first module validates the full pipeline:
 
 ```bash
 mkdir -p submodules/Core
@@ -133,7 +133,7 @@ Add to `.gitignore` if artifacts should stay local.
 - [ ] `pod install` succeeded with no warnings
 - [ ] First module builds: `** BUILD SUCCEEDED **` confirmed
 - [ ] LauncherPlugin installed in app entry file
-- [ ] Running `Skill({ skill: "boardy-vip-quick-ref" })` returns routing table
+- [ ] Running `Skill({ skill: "boardy-quick-ref" })` returns routing table
 
 ## Common First-Session Mistakes
 
@@ -147,10 +147,10 @@ Add to `.gitignore` if artifacts should stay local.
 
 ## Upgrade Path
 
-When `boardy-vip-skills` releases new rule versions:
+When `boardy-skills` releases new rule versions:
 ```bash
 # Re-run install to update skills
-cd /path/to/boardy-vip-skills && ./install.sh
+cd /path/to/boardy-skills && ./install.sh
 
 # Copy updated rule templates to project
 cp templates/.claude/rules/*.md /path/to/project/.claude/rules/
