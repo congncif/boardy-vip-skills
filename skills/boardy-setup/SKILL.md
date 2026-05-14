@@ -22,12 +22,19 @@ Setting up a new project requires wiring three layers:
 ## Step 1 — Install the Skill Pack Rules
 
 ```bash
-# Option A: Copy rules from boardy-skills repo
-cp -r /path/to/boardy-skills/templates/.claude /path/to/new-project/
+cd /path/to/new-project
+mkdir -p .claude/rules
 
-# Option B: Install from skill pack (if install.sh run)
-# Skills are already at ~/.claude/skills/ — rules templates need manual copy
+# 1. Project config templates
+cp /path/to/boardy-skills/templates/CLAUDE.md .
+cp /path/to/boardy-skills/templates/PROJECT_CONFIG.md .claude/rules/
+cp /path/to/boardy-skills/templates/PROJECT_STRUCTURE.md .claude/rules/
+
+# 2. Architecture spec files (required — skills reference these by filename)
+cp /path/to/boardy-skills/templates/.claude/rules/*.md .claude/rules/
 ```
+
+> Skills (`boardy-start`, `boardy-board`, etc.) reference spec files like `MICROBOARD_UI.md` by filename. Those files must exist in `.claude/rules/` or the references won't resolve.
 
 ## Step 2 — Configure CLAUDE.md
 

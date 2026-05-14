@@ -24,11 +24,14 @@ Claude Code skill pack for iOS projects built with [Boardy](https://github.com/c
 
 ### Templates
 
-| File | Copy to |
-|------|---------|
+| File / Folder | Copy to |
+|---------------|---------|
 | `templates/CLAUDE.md` | `{ProjectRoot}/CLAUDE.md` |
 | `templates/PROJECT_CONFIG.md` | `{ProjectRoot}/.claude/rules/PROJECT_CONFIG.md` |
 | `templates/PROJECT_STRUCTURE.md` | `{ProjectRoot}/.claude/rules/PROJECT_STRUCTURE.md` |
+| `templates/.claude/rules/*.md` | `{ProjectRoot}/.claude/rules/` (all 30 spec files) |
+
+> **Why spec files?** Skills (`boardy-start`, `boardy-board`, etc.) are lightweight routing guides that reference specs by filename (e.g. `MICROBOARD_UI.md`). The spec files must exist in the project's `.claude/rules/` for those references to resolve. The 30 `.md` files in `templates/.claude/rules/` are the canonical architecture specs — generic and project-agnostic.
 
 ---
 
@@ -125,9 +128,13 @@ Standard iOS app creation in Xcode. Close Xcode after creation.
 cd /path/to/your-new-project
 mkdir -p .claude/rules
 
+# Project config files
 cp /path/to/boardy-skills/templates/CLAUDE.md .
 cp /path/to/boardy-skills/templates/PROJECT_CONFIG.md .claude/rules/
 cp /path/to/boardy-skills/templates/PROJECT_STRUCTURE.md .claude/rules/
+
+# Architecture spec files (required — skills reference these by filename)
+cp /path/to/boardy-skills/templates/.claude/rules/*.md .claude/rules/
 ```
 
 ### 3. Fill PROJECT_CONFIG.md
