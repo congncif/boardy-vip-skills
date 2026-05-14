@@ -1,6 +1,7 @@
 ---
 name: boardy-setup
 description: Use when starting a brand-new iOS project with Boardy+VIP architecture — covers CLAUDE.md wiring, PROJECT_CONFIG.md setup, first module creation, and validation that the architecture is correctly bootstrapped
+version: 1.1.0
 ---
 
 # Boardy+VIP New Project Setup
@@ -12,7 +13,7 @@ Setting up a new project requires wiring three layers:
 2. **Project config** — PROJECT_CONFIG.md with project-specific values
 3. **First module** — one working module to validate the setup end-to-end
 
-Architecture specs are bundled inside the installed skills at `~/.claude/skills/boardy-start/specs/` — no per-project copy needed.
+Architecture specs are bundled inside the installed skills at `~/.claude/skills/boardy-vip/specs/` — no per-project copy needed.
 
 ## Prerequisites
 
@@ -34,7 +35,7 @@ cp /path/to/boardy-skills/templates/PROJECT_CONFIG.md .claude/rules/
 cp /path/to/boardy-skills/templates/PROJECT_STRUCTURE.md .claude/rules/
 ```
 
-Architecture specs are in `~/.claude/skills/boardy-start/specs/` (installed by `install.sh`).
+Architecture specs are in `~/.claude/skills/boardy-vip/specs/` (installed by `install.sh`).
 No spec files need to be copied to the project — skills read them directly from the skill directory.
 
 ## Step 2 — Fill PROJECT_CONFIG.md
@@ -115,7 +116,7 @@ Add to `.gitignore` if artifacts should stay local.
 - [ ] `pod install` succeeded with no warnings
 - [ ] First module builds: `** BUILD SUCCEEDED **` confirmed
 - [ ] LauncherPlugin installed in app entry file
-- [ ] Running `Skill({ skill: "boardy-start" })` returns routing table
+- [ ] Running `Skill({ skill: "boardy-vip" })` returns routing table
 
 ## Common First-Session Mistakes
 
@@ -135,5 +136,5 @@ When `boardy-skills` releases new versions:
 cd /path/to/boardy-skills && git pull && ./install.sh
 ```
 
-Architecture specs automatically update in `~/.claude/skills/boardy-start/specs/`.
+Architecture specs automatically update in `~/.claude/skills/boardy-vip/specs/`.
 No project files need to be touched — only `PROJECT_CONFIG.md` and `PROJECT_STRUCTURE.md` are project-specific.

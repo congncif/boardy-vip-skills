@@ -1,6 +1,7 @@
 ---
 name: boardy-module
 description: Use when creating a new Boardy+VIP feature module — covers directory setup, podspec templates, LauncherPlugin wiring, and first module validation checklist
+version: 1.1.0
 ---
 
 # Boardy+VIP Module Creation

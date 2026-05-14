@@ -11,15 +11,16 @@ Claude Code skill pack for iOS projects built with [Boardy](https://github.com/c
 | **5 Skills** | Quick-reference guides invokable via Claude Code `Skill` tool |
 | **3 Templates** | Drop-in starting files for a new project's `.claude/rules/` |
 | **install.sh** | One-command skill installation to `~/.claude/skills/` |
+| **sync.sh** | Sync architecture specs from a project's `.claude/rules/` into the skill pack |
 
 ### Skills
 
 | Skill | Invoke as | When to use |
 |-------|-----------|-------------|
-| `boardy-start` | Any architecture task | Master routing table, 10 rules, naming conventions, key patterns |
+| `boardy-vip` | Any architecture task | Master routing table, 10 rules, naming conventions, key patterns |
 | `boardy-module` | Creating a new module | Module scaffold steps, podspec templates, LauncherPlugin wiring |
 | `boardy-board` | Implementing any board | Board type decision tree, UI/Flow/Viewless/BlockTask patterns |
-| `boardy-review` | Code review / PR verification | Complete architecture compliance checklist |
+| `boardy-review` | Code review / PR verification | Loads full compliance checklist from bundled spec |
 | `boardy-setup` | Brand-new project | Bootstrap CLAUDE.md, PROJECT_CONFIG.md, first module, validation |
 
 ### Templates
@@ -30,7 +31,7 @@ Claude Code skill pack for iOS projects built with [Boardy](https://github.com/c
 | `templates/PROJECT_CONFIG.md` | `{ProjectRoot}/.claude/rules/PROJECT_CONFIG.md` |
 | `templates/PROJECT_STRUCTURE.md` | `{ProjectRoot}/.claude/rules/PROJECT_STRUCTURE.md` |
 
-> **Why only 3 files?** Architecture specs (30 `.md` files) are bundled inside the `boardy-start` skill at `~/.claude/skills/boardy-start/specs/`. Skills read them directly via the `Read` tool — no per-project copy needed. This means upgrading skills (`git pull && ./install.sh`) automatically updates all specs everywhere, without touching project files.
+> **Why only 3 files?** Architecture specs (30 `.md` files) are bundled inside the `boardy-vip` skill at `~/.claude/skills/boardy-vip/specs/`. Skills read them directly via the `Read` tool — no per-project copy needed. This means upgrading skills (`git pull && ./install.sh`) automatically updates all specs everywhere, without touching project files.
 
 ---
 
@@ -85,12 +86,14 @@ This copies skill files to `~/.claude/skills/`:
 
 ```
 ~/.claude/skills/
-├── boardy-start/SKILL.md
+├── boardy-vip/SKILL.md + specs/
 ├── boardy-module/SKILL.md
 ├── boardy-board/SKILL.md
 ├── boardy-review/SKILL.md
 └── boardy-setup/SKILL.md
 ```
+
+> **Upgrading from v1.0.0?** The script automatically removes the old `boardy-start` directory. Update any CLAUDE.md references from `boardy-start` → `boardy-vip`.
 
 ### Step 3 — Verify installation
 
@@ -102,9 +105,9 @@ Expected output:
 ```
 boardy-board
 boardy-module
-boardy-start
 boardy-review
 boardy-setup
+boardy-vip
 ```
 
 ### Uninstall
@@ -133,7 +136,7 @@ cp /path/to/boardy-skills/templates/PROJECT_CONFIG.md .claude/rules/
 cp /path/to/boardy-skills/templates/PROJECT_STRUCTURE.md .claude/rules/
 ```
 
-Architecture specs are bundled inside `~/.claude/skills/boardy-start/specs/` (installed in Step 2).
+Architecture specs are bundled inside `~/.claude/skills/boardy-vip/specs/` (installed in Step 2).
 No spec files need to be copied — skills read them directly from the skill directory.
 
 ### 3. Fill PROJECT_CONFIG.md
@@ -162,8 +165,6 @@ grep -r '{' .claude/rules/PROJECT_CONFIG.md
 xcodebuild build -workspace YourApp.xcworkspace -scheme YourApp -showdestinations
 ```
 
-Pick the right device name and update `{Destination}` in PROJECT_CONFIG.md.
-
 ### 5. Set up Podfile
 
 ```ruby
@@ -191,7 +192,7 @@ Then open Claude Code and invoke:
 Skill({ skill: "boardy-module" })
 ```
 
-Follow the module creation steps. Build to validate:
+Build to validate:
 
 ```bash
 xcodebuild build \
@@ -217,13 +218,13 @@ echo ".superpowers/" >> .gitignore   # optional: keep AI artifacts local
 
 ## Using Skills in Claude Code
 
-Skills are invoked via the `Skill` tool inside Claude Code sessions. Claude Code auto-discovers skills from `~/.claude/skills/`.
+Skills are invoked via the `Skill` tool inside Claude Code sessions.
 
 ### Common invocations
 
 ```
 # At session start or before any architecture task
-Skill({ skill: "boardy-start" })
+Skill({ skill: "boardy-vip" })
 
 # Before creating a new module
 Skill({ skill: "boardy-module" })
@@ -238,45 +239,74 @@ Skill({ skill: "boardy-review" })
 Skill({ skill: "boardy-setup" })
 ```
 
-### How Claude uses skills
+---
 
-When Claude Code loads a skill, it reads the `SKILL.md` content and uses it as a reference guide. Skills with clear `description` fields are also auto-matched by Claude when a relevant task is detected.
+## Syncing Specs from a Project
+
+When architecture rules evolve in a project's `.claude/rules/`, use `sync.sh` to pull them into this skill pack:
+
+```bash
+# Sync specs only (review diff before committing)
+./sync.sh /path/to/project/.claude/rules/
+
+# Sync + bump patch version (1.1.0 → 1.1.1) in all SKILL.md files and CHANGELOG.md
+./sync.sh /path/to/project/.claude/rules/ --bump-version
+```
+
+After syncing:
+
+```bash
+# 1. Review what changed
+git diff skills/boardy-vip/specs/
+
+# 2. If the rule change affects Claude's BEHAVIOR (not just spec wording),
+#    also update the relevant SKILL.md (boardy-board, boardy-module, etc.)
+
+# 3. Commit and push
+git add -p
+git commit -m "sync: update specs from project rules v1.1.1"
+git push
+
+# 4. Re-install on all machines
+git pull && ./install.sh
+```
+
+### What sync.sh copies
+
+- All `.md` files from the project's `.claude/rules/` directory
+- **Skips** project-specific binding files: `PROJECT_CONFIG.md`, `PROJECT_STRUCTURE.md`, `ADOPTION.md`
+
+### What sync.sh does NOT do
+
+- Does not modify SKILL.md content beyond the version field
+- Does not push to git — you review and commit manually
+- Does not copy templates — templates are maintained separately
 
 ---
 
-## Project Templates Guide
+## Upgrade Path
 
-### CLAUDE.md
+### Updating skills (receiving updates)
 
-The constitution file that Claude loads at session start. It:
-- Defines load order for rules files
-- Establishes the rule hierarchy
-- Sets operating discipline (commit workflow, staging policy)
+```bash
+cd /path/to/boardy-skills
+git pull
+./install.sh
+```
 
-After copying, no modifications needed — it references other files via `@.claude/rules/`.
+Skills and bundled specs are overwritten in place. Claude Code picks up changes in the next session.
 
-### PROJECT_CONFIG.md
+### Project-specific files
 
-**Project-specific values only.** Fill all `{Placeholder}` entries. This file is the single source of truth for:
-- Build commands (workspace, scheme, destination)
-- Git configuration (remote, branch)
-- Module root path
-- AI workflow artifact locations
+`PROJECT_CONFIG.md` and `PROJECT_STRUCTURE.md` are yours — never overwritten by install.
 
-**Do not** put architecture rules here — those live in the skill files.
-
-### PROJECT_STRUCTURE.md
-
-**Keep synchronized with code.** Update in the same commit whenever:
-- A module is added or removed
-- A scheme is renamed
-- Module responsibilities change
+`CLAUDE.md`: if you've customized it, compare with the template (`diff templates/CLAUDE.md your-project/CLAUDE.md`) and merge improvements manually.
 
 ---
 
 ## Architecture Rules Reference
 
-The full architecture rules (specs) are embedded in the skill files and available on demand. For deep dives, the originating project's `.claude/rules/` contains the complete spec set:
+Full specs are bundled at `~/.claude/skills/boardy-vip/specs/` after installation:
 
 | Spec | Topic |
 |------|-------|
@@ -295,45 +325,22 @@ The full architecture rules (specs) are embedded in the skill files and availabl
 
 ---
 
-## Upgrade Path
-
-### Updating skills
-
-```bash
-cd /path/to/boardy-skills
-git pull
-./install.sh
-```
-
-Skills are overwritten in place. Claude Code picks up changes immediately in the next session.
-
-### Propagating rule updates to existing projects
-
-Architecture specs live in the skill — `git pull && ./install.sh` updates them everywhere automatically.
-
-For project-specific files (`PROJECT_CONFIG.md`, `PROJECT_STRUCTURE.md`): these are yours — never overwritten by install.
-
-For `CLAUDE.md`: the template is a starting point. If you've customized it, review `git diff` between the new template and your version and merge improvements manually.
-
----
-
 ## Contributing
-
-This pack is extracted from a production project and kept in sync as the architecture evolves. To contribute improvements:
 
 1. Fork this repo
 2. Update the relevant `skills/{name}/SKILL.md` or `templates/*.md`
-3. Open a PR with a description of what changed and why
+3. Run `./sync.sh` to pull latest specs if needed
+4. Open a PR describing what changed and why
 
-**Key rule**: Skills should be architecture-neutral where possible. Project-specific values belong in templates, not skills.
+**Key rule**: Skills are architecture-neutral. Project-specific values belong in templates, not skills.
 
 ---
 
 ## Changelog
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0.0 | 2026-05-14 | Initial release — 5 skills, 3 templates, install.sh |
+See [CHANGELOG.md](CHANGELOG.md) for full version history.
+
+**Latest**: v1.1.0 — renamed `boardy-start` → `boardy-vip`, added `sync.sh`, refactored `boardy-review` to read from spec.
 
 ---
 

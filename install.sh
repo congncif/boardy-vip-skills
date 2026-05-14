@@ -8,17 +8,22 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SOURCE_SKILLS="$SCRIPT_DIR/skills"
 
 SKILL_NAMES=(
-  "boardy-start"
+  "boardy-vip"
   "boardy-module"
   "boardy-board"
   "boardy-review"
   "boardy-setup"
 )
 
+# Skills renamed in previous versions — remove on install and uninstall
+LEGACY_SKILL_NAMES=(
+  "boardy-start"
+)
+
 # ── Uninstall ──────────────────────────────────────────────────────────────────
 if [[ "${1:-}" == "--uninstall" ]]; then
   echo "Uninstalling Boardy+VIP skills..."
-  for skill in "${SKILL_NAMES[@]}"; do
+  for skill in "${SKILL_NAMES[@]}" "${LEGACY_SKILL_NAMES[@]}"; do
     target="$SKILLS_DIR/$skill"
     if [[ -d "$target" ]]; then
       rm -rf "$target"
@@ -28,6 +33,15 @@ if [[ "${1:-}" == "--uninstall" ]]; then
   echo "Done."
   exit 0
 fi
+
+# ── Remove legacy installs ─────────────────────────────────────────────────────
+for legacy in "${LEGACY_SKILL_NAMES[@]}"; do
+  target="$SKILLS_DIR/$legacy"
+  if [[ -d "$target" ]]; then
+    rm -rf "$target"
+    echo "  removed legacy: $target"
+  fi
+done
 
 # ── Install ────────────────────────────────────────────────────────────────────
 echo "Installing Boardy+VIP skills to $SKILLS_DIR"
@@ -63,7 +77,7 @@ echo ""
 echo "Verify with: ls $SKILLS_DIR | grep boardy-"
 echo ""
 echo "Usage in Claude Code:"
-echo "  Skill({ skill: \"boardy-start\" })"
+echo "  Skill({ skill: \"boardy-vip\" })"
 echo "  Skill({ skill: \"boardy-module\" })"
 echo "  Skill({ skill: \"boardy-board\" })"
 echo "  Skill({ skill: \"boardy-review\" })"

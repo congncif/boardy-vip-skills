@@ -1,20 +1,21 @@
 ---
-name: boardy-start
+name: boardy-vip
 description: Use when starting any iOS development task on a Boardy+VIP project — routes to correct spec, provides naming conventions, board communication patterns, and the 10 non-negotiable architecture rules
+version: 1.1.0
 ---
 
 # Boardy+VIP Quick Reference
 
-Specs are bundled in this skill at `~/.claude/skills/boardy-start/specs/`.
+Specs are bundled in this skill at `~/.claude/skills/boardy-vip/specs/`.
 Use the Read tool to load the full spec when needed.
 
 ## Task → Spec Routing
 
 | Task | Skill / Spec |
 |------|-------------|
-| Architecture overview | Read `~/.claude/skills/boardy-start/specs/ARCHITECTURE.md` |
-| SDK / dependency choice | Read `~/.claude/skills/boardy-start/specs/SDK_FIRST.md` |
-| 3-layer dependency rule | Read `~/.claude/skills/boardy-start/specs/LAYERING.md` |
+| Architecture overview | Read `~/.claude/skills/boardy-vip/specs/ARCHITECTURE.md` |
+| SDK / dependency choice | Read `~/.claude/skills/boardy-vip/specs/SDK_FIRST.md` |
+| 3-layer dependency rule | Read `~/.claude/skills/boardy-vip/specs/LAYERING.md` |
 | New module scaffold | `boardy-module` skill → specs: `MODULE_CREATION.md`, `IO_INTERFACE.md` |
 | IO / BoardID / InOut / ServiceMap | `boardy-module` skill → spec: `IO_INTERFACE.md` |
 | UI Board (VIP) | `boardy-board` skill → specs: `MICROBOARD_UI.md`, `VIP_COMPONENTS.md` |
@@ -22,14 +23,14 @@ Use the Read tool to load the full spec when needed.
 | Board communication / Bus / flows | `boardy-board` skill → spec: `COMMUNICATION.md` |
 | Context navigation (back/return/alerts) | `boardy-board` skill → spec: `CONTEXT_NAVIGATION.md` |
 | Plugin / LauncherPlugin | `boardy-module` skill → spec: `PLUGINS_INTEGRATION.md` |
-| ComposableBoard / TabBar | Read `~/.claude/skills/boardy-start/specs/COMPOSABLE_BOARD.md` |
-| Per-activation services / concurrency guard | Read `~/.claude/skills/boardy-start/specs/PER_ACTIVATION_RESOURCES.md` |
-| Multiple providers (OCP) | Read `~/.claude/skills/boardy-start/specs/EXTENSIBLE_PROVIDER.md` |
-| Service / UseCase / Repository | Read `~/.claude/skills/boardy-start/specs/SERVICE_LAYER.md` |
-| Cross-module service sharing | Read `~/.claude/skills/boardy-start/specs/CROSS_MODULE_DI.md` |
+| ComposableBoard / TabBar | Read `~/.claude/skills/boardy-vip/specs/COMPOSABLE_BOARD.md` |
+| Per-activation services / concurrency guard | Read `~/.claude/skills/boardy-vip/specs/PER_ACTIVATION_RESOURCES.md` |
+| Multiple providers (OCP) | Read `~/.claude/skills/boardy-vip/specs/EXTENSIBLE_PROVIDER.md` |
+| Service / UseCase / Repository | Read `~/.claude/skills/boardy-vip/specs/SERVICE_LAYER.md` |
+| Cross-module service sharing | Read `~/.claude/skills/boardy-vip/specs/CROSS_MODULE_DI.md` |
 | Code review | `boardy-review` skill → spec: `REVIEWER_CHECKLIST.md` |
-| Code examples / skeletons | Read `~/.claude/skills/boardy-start/specs/EXAMPLES.md` → matching `EXAMPLES_*.md` |
-| Testing | Read `~/.claude/skills/boardy-start/specs/TESTING.md` |
+| Code examples / skeletons | Read `~/.claude/skills/boardy-vip/specs/EXAMPLES.md` → matching `EXAMPLES_*.md` |
+| Testing | Read `~/.claude/skills/boardy-vip/specs/TESTING.md` |
 
 ## Non-UI Board Decision Tree
 

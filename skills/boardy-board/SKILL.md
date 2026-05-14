@@ -1,6 +1,7 @@
 ---
 name: boardy-board
 description: Use when implementing a Boardy microboard — decides board type (UI VIP, Flow, BlockTask, Viewless), provides key patterns for Board shell, Builder, event buses, and complete()/sendOutput() semantics
+version: 1.1.0
 ---
 
 # Boardy+VIP Board Implementation
