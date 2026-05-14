@@ -16,7 +16,7 @@ Claude Code skill pack for iOS projects built with [Boardy](https://github.com/c
 
 | Skill | Invoke as | When to use |
 |-------|-----------|-------------|
-| `boardy-quick-ref` | Any architecture task | Master routing table, 10 rules, naming conventions, key patterns |
+| `boardy-start` | Any architecture task | Master routing table, 10 rules, naming conventions, key patterns |
 | `boardy-module` | Creating a new module | Module scaffold steps, podspec templates, LauncherPlugin wiring |
 | `boardy-board` | Implementing any board | Board type decision tree, UI/Flow/Viewless/BlockTask patterns |
 | `boardy-review` | Code review / PR verification | Complete architecture compliance checklist |
@@ -83,7 +83,7 @@ This copies skill files to `~/.claude/skills/`:
 
 ```
 ~/.claude/skills/
-├── boardy-quick-ref/SKILL.md
+├── boardy-start/SKILL.md
 ├── boardy-module/SKILL.md
 ├── boardy-board/SKILL.md
 ├── boardy-review/SKILL.md
@@ -100,7 +100,7 @@ Expected output:
 ```
 boardy-board
 boardy-module
-boardy-quick-ref
+boardy-start
 boardy-review
 boardy-setup
 ```
@@ -217,7 +217,7 @@ Skills are invoked via the `Skill` tool inside Claude Code sessions. Claude Code
 
 ```
 # At session start or before any architecture task
-Skill({ skill: "boardy-quick-ref" })
+Skill({ skill: "boardy-start" })
 
 # Before creating a new module
 Skill({ skill: "boardy-module" })
