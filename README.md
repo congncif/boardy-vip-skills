@@ -24,14 +24,13 @@ Claude Code skill pack for iOS projects built with [Boardy](https://github.com/c
 
 ### Templates
 
-| File / Folder | Copy to |
-|---------------|---------|
+| File | Copy to |
+|------|---------|
 | `templates/CLAUDE.md` | `{ProjectRoot}/CLAUDE.md` |
 | `templates/PROJECT_CONFIG.md` | `{ProjectRoot}/.claude/rules/PROJECT_CONFIG.md` |
 | `templates/PROJECT_STRUCTURE.md` | `{ProjectRoot}/.claude/rules/PROJECT_STRUCTURE.md` |
-| `templates/.claude/rules/*.md` | `{ProjectRoot}/.claude/rules/` (all 30 spec files) |
 
-> **Why spec files?** Skills (`boardy-start`, `boardy-board`, etc.) are lightweight routing guides that reference specs by filename (e.g. `MICROBOARD_UI.md`). The spec files must exist in the project's `.claude/rules/` for those references to resolve. The 30 `.md` files in `templates/.claude/rules/` are the canonical architecture specs — generic and project-agnostic.
+> **Why only 3 files?** Architecture specs (30 `.md` files) are bundled inside the `boardy-start` skill at `~/.claude/skills/boardy-start/specs/`. Skills read them directly via the `Read` tool — no per-project copy needed. This means upgrading skills (`git pull && ./install.sh`) automatically updates all specs everywhere, without touching project files.
 
 ---
 
@@ -128,14 +127,14 @@ Standard iOS app creation in Xcode. Close Xcode after creation.
 cd /path/to/your-new-project
 mkdir -p .claude/rules
 
-# Project config files
+# Project config files (the only files needed per-project)
 cp /path/to/boardy-skills/templates/CLAUDE.md .
 cp /path/to/boardy-skills/templates/PROJECT_CONFIG.md .claude/rules/
 cp /path/to/boardy-skills/templates/PROJECT_STRUCTURE.md .claude/rules/
-
-# Architecture spec files (required — skills reference these by filename)
-cp /path/to/boardy-skills/templates/.claude/rules/*.md .claude/rules/
 ```
+
+Architecture specs are bundled inside `~/.claude/skills/boardy-start/specs/` (installed in Step 2).
+No spec files need to be copied — skills read them directly from the skill directory.
 
 ### 3. Fill PROJECT_CONFIG.md
 
@@ -310,11 +309,11 @@ Skills are overwritten in place. Claude Code picks up changes immediately in the
 
 ### Propagating rule updates to existing projects
 
-Rule templates in `templates/` are starting points. For existing projects:
+Architecture specs live in the skill — `git pull && ./install.sh` updates them everywhere automatically.
 
-1. Review `git diff` between new template and your current rules file
-2. Merge improvements manually — never blindly overwrite (your PROJECT_CONFIG.md and PROJECT_STRUCTURE.md have project-specific content)
-3. Re-run `pod install` if podspec conventions change
+For project-specific files (`PROJECT_CONFIG.md`, `PROJECT_STRUCTURE.md`): these are yours — never overwritten by install.
+
+For `CLAUDE.md`: the template is a starting point. If you've customized it, review `git diff` between the new template and your version and merge improvements manually.
 
 ---
 

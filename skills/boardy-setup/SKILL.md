@@ -12,57 +12,32 @@ Setting up a new project requires wiring three layers:
 2. **Project config** — PROJECT_CONFIG.md with project-specific values
 3. **First module** — one working module to validate the setup end-to-end
 
+Architecture specs are bundled inside the installed skills at `~/.claude/skills/boardy-start/specs/` — no per-project copy needed.
+
 ## Prerequisites
 
 - Xcode 15+
 - CocoaPods (`gem install cocoapods`)
 - Boardy pod available (via CocoaPods or local path)
 - Claude Code CLI
+- Boardy skills installed: `cd /path/to/boardy-skills && ./install.sh`
 
-## Step 1 — Install the Skill Pack Rules
+## Step 1 — Copy Project Templates
 
 ```bash
 cd /path/to/new-project
 mkdir -p .claude/rules
 
-# 1. Project config templates
+# Project config and constitution
 cp /path/to/boardy-skills/templates/CLAUDE.md .
 cp /path/to/boardy-skills/templates/PROJECT_CONFIG.md .claude/rules/
 cp /path/to/boardy-skills/templates/PROJECT_STRUCTURE.md .claude/rules/
-
-# 2. Architecture spec files (required — skills reference these by filename)
-cp /path/to/boardy-skills/templates/.claude/rules/*.md .claude/rules/
 ```
 
-> Skills (`boardy-start`, `boardy-board`, etc.) reference spec files like `MICROBOARD_UI.md` by filename. Those files must exist in `.claude/rules/` or the references won't resolve.
+Architecture specs are in `~/.claude/skills/boardy-start/specs/` (installed by `install.sh`).
+No spec files need to be copied to the project — skills read them directly from the skill directory.
 
-## Step 2 — Configure CLAUDE.md
-
-Create `{ProjectRoot}/CLAUDE.md`:
-
-```markdown
-# Project Constitution
-
-@.claude/rules/QUICK_REF.md       ← load FIRST every session
-@.claude/rules/PROJECT_CONFIG.md  ← project-specific values
-@.claude/rules/PROJECT_STRUCTURE.md ← current module topology
-
-## Rule Hierarchy
-1. User's explicit instruction
-2. This constitution
-3. `.claude/rules/QUICK_REF.md` and task specs
-4. `.claude/rules/REVIEWER_CHECKLIST.md` for reviews
-5. `.claude/rules/PROJECT_CONFIG.md` for build commands
-6. `.claude/rules/PROJECT_STRUCTURE.md` for topology
-
-## Operating Discipline
-- Run `pod install` after any structural change
-- Stage commits by explicit file paths only
-- Commit only after user approval
-- Use `.superpowers/` for AI workflow artifacts
-```
-
-## Step 3 — Fill PROJECT_CONFIG.md
+## Step 2 — Fill PROJECT_CONFIG.md
 
 Copy template and fill these required values:
 
@@ -82,11 +57,11 @@ Run destination discovery if simulator is unknown:
 xcodebuild build -workspace {Workspace} -scheme {Scheme} -showdestinations
 ```
 
-## Step 4 — Create PROJECT_STRUCTURE.md
+## Step 3 — Create PROJECT_STRUCTURE.md
 
 Copy template and fill scheme/module inventory. Update this file every time a module is added/removed/renamed.
 
-## Step 5 — Set Up Podfile
+## Step 4 — Set Up Podfile
 
 ```ruby
 platform :ios, '13.0'
@@ -99,7 +74,7 @@ target 'YourApp' do
 end
 ```
 
-## Step 6 — Create First Module
+## Step 5 — Create First Module
 
 Follow `boardy-module` skill. The first module validates the full pipeline:
 
@@ -119,7 +94,7 @@ xcodebuild build \
 
 > Empty grep output = failure. Always verify `** BUILD SUCCEEDED **` is present.
 
-## Step 7 — Wire Superpowers (optional)
+## Step 6 — Wire Superpowers (optional)
 
 Create `.superpowers/` directory for AI workflow artifacts:
 ```
@@ -134,13 +109,13 @@ Add to `.gitignore` if artifacts should stay local.
 
 ## Validation Checklist
 
-- [ ] `CLAUDE.md` loads `QUICK_REF.md` first via `@` reference
+- [ ] `CLAUDE.md` present at project root
 - [ ] `PROJECT_CONFIG.md` has all `{Placeholder}` values filled
 - [ ] `PROJECT_STRUCTURE.md` reflects current schemes/modules
 - [ ] `pod install` succeeded with no warnings
 - [ ] First module builds: `** BUILD SUCCEEDED **` confirmed
 - [ ] LauncherPlugin installed in app entry file
-- [ ] Running `Skill({ skill: "boardy-quick-ref" })` returns routing table
+- [ ] Running `Skill({ skill: "boardy-start" })` returns routing table
 
 ## Common First-Session Mistakes
 
@@ -154,12 +129,11 @@ Add to `.gitignore` if artifacts should stay local.
 
 ## Upgrade Path
 
-When `boardy-skills` releases new rule versions:
+When `boardy-skills` releases new versions:
 ```bash
-# Re-run install to update skills
-cd /path/to/boardy-skills && ./install.sh
-
-# Copy updated rule templates to project
-cp templates/.claude/rules/*.md /path/to/project/.claude/rules/
-# Then re-fill project-specific values in PROJECT_CONFIG.md and PROJECT_STRUCTURE.md
+# Re-run install — skills and bundled specs are updated in place
+cd /path/to/boardy-skills && git pull && ./install.sh
 ```
+
+Architecture specs automatically update in `~/.claude/skills/boardy-start/specs/`.
+No project files need to be touched — only `PROJECT_CONFIG.md` and `PROJECT_STRUCTURE.md` are project-specific.
