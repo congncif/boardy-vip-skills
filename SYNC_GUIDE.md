@@ -58,6 +58,8 @@ The table below shows: which spec → which SKILL.md → which **named section**
 | `CROSS_MODULE_DI.md` | *(no SKILL.md)* | Spec is read live. No update needed. |
 | `PER_ACTIVATION_RESOURCES.md` | `boardy-vip` | 10 Non-Negotiable Rules (Rule 8 area), Key Code Patterns |
 | `EXTENSIBLE_PROVIDER.md` | `boardy-vip` | 10 Non-Negotiable Rules, Task → Spec Routing |
+| `ACTIVATION_BARRIER.md` | `boardy-vip` | Task → Spec Routing |
+| `ACTIVATION_BARRIER.md` | `boardy-board` | Activation Barrier section, complete() Semantics |
 | `REVIEWER_CHECKLIST.md` | `boardy-review` | **Reads live — no update needed unless section order changes** |
 | `REVIEWER_CHECKLIST.md` | `boardy-vip` | Quick Fails list in boardy-review Quick Fails section |
 | `COMPOSABLE_BOARD.md` | `boardy-board` | Board Type Decision (composable row) |
@@ -229,12 +231,13 @@ The numbered list here must mirror the section order in `REVIEWER_CHECKLIST.md`.
 Current section order:
 1. Architecture Rules
 2. Per-Activation Resources
-3. Extensible Provider
-4. Module Structure
-5. IO Layer
-6. VIP Components
-7. Service Layer
-8. Context Navigation
+3. Activation Barrier
+4. Extensible Provider
+5. Module Structure
+6. IO Layer
+7. VIP Components
+8. Service Layer
+9. Context Navigation
 
 ---
 

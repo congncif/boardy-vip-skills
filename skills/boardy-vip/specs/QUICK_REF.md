@@ -25,6 +25,7 @@
 | ComposableBoard / TabBar | `@.claude/rules/COMPOSABLE_BOARD.md` |
 | Per-activation services / concurrency guard / routing config in Controller | `@.claude/rules/PER_ACTIVATION_RESOURCES.md` |
 | Multiple interchangeable providers / OCP extensible backend selection | `@.claude/rules/EXTENSIBLE_PROVIDER.md` |
+| Gate board activation behind another board (ad before session, permission check, login wall) | `@.claude/rules/ACTIVATION_BARRIER.md` |
 | Testing | `@.claude/rules/TESTING.md` |
 | Code review | `@.claude/rules/REVIEWER_CHECKLIST.md` only |
 | Code example | `@.claude/rules/EXAMPLES.md` (index) → load matching `EXAMPLES_*.md` |

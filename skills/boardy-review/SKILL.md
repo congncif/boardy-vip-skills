@@ -1,7 +1,7 @@
 ---
 name: boardy-review
 description: Use when reviewing a pull request or verifying implementation on a Boardy+VIP project — loads the full architecture compliance checklist from the bundled spec
-version: 1.1.0
+version: 1.1.1
 ---
 
 # Boardy+VIP Code Review
@@ -18,12 +18,13 @@ Work through each section in order:
 
 1. **Architecture Rules** — check every PR regardless of scope
 2. **Per-Activation Resources** — check boards wrapping external services (SDKs, sockets)
-3. **Extensible Provider** — check modules with multiple concrete provider backends
-4. **Module Structure** — check podspecs, folder layout, pod install
-5. **IO Layer** — check BoardIDs, access modifiers, ServiceMap extensions
-6. **VIP Components** — check Board, Interactor, Presenter, ViewController, Builder
-7. **Service Layer** — check Domain models, UseCases, Repositories, Infra
-8. **Context Navigation** — check every PR that has navigation or alert code
+3. **Activation Barrier** — check boards that declare `activationBarrier` or are used as a barrier
+4. **Extensible Provider** — check modules with multiple concrete provider backends
+5. **Module Structure** — check podspecs, folder layout, pod install
+6. **IO Layer** — check BoardIDs, access modifiers, ServiceMap extensions
+7. **VIP Components** — check Board, Interactor, Presenter, ViewController, Builder
+8. **Service Layer** — check Domain models, UseCases, Repositories, Infra
+9. **Context Navigation** — check every PR that has navigation or alert code
 
 ## Quick Fails (stop review immediately)
 

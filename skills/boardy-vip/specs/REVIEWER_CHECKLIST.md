@@ -35,6 +35,19 @@
 
 ---
 
+## Activation Barrier (check boards that gate another board's activation)
+
+- [ ] `activationBarrier(withGuaranteedInput:)` returns non-nil only when the board is intentionally gated
+- [ ] Uses `.barrier(with: {BarrierBoard}Input(...))` — not `.barrier()` — when barrier board InputType ≠ Void
+- [ ] Correct scope: `.mainboard` for per-session gates; `.application` for app-wide singleton gates
+- [ ] Barrier board (`{BarrierBoard}`) calls `complete()` in **every** exit path (`sendOutput` then `complete()`)
+- [ ] Barrier board `OutputType` carries a typed result enum when callers need to distinguish outcomes (not `Void`)
+- [ ] All controller exit paths pass the result to `delegate?.finish(_ result:)` before `complete()`
+- [ ] Gated board's module Plugins podspec adds `s.dependency '{BarrierModule}'`
+- [ ] No double-`complete()` on barrier board (all exit paths lead to exactly one `complete()`)
+
+---
+
 ## Extensible Provider Architecture (check modules with multiple external providers/frameworks)
 
 - [ ] `public enum {Feature}ProviderConfiguration` does NOT exist — enum form is forbidden (OCP violation)

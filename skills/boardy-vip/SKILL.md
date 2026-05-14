@@ -1,7 +1,7 @@
 ---
 name: boardy-vip
 description: Use when starting any iOS development task on a Boardy+VIP project — routes to correct spec, provides naming conventions, board communication patterns, and the 10 non-negotiable architecture rules
-version: 1.1.0
+version: 1.1.1
 ---
 
 # Boardy+VIP Quick Reference
@@ -26,6 +26,7 @@ Use the Read tool to load the full spec when needed.
 | ComposableBoard / TabBar | Read `~/.claude/skills/boardy-vip/specs/COMPOSABLE_BOARD.md` |
 | Per-activation services / concurrency guard | Read `~/.claude/skills/boardy-vip/specs/PER_ACTIVATION_RESOURCES.md` |
 | Multiple providers (OCP) | Read `~/.claude/skills/boardy-vip/specs/EXTENSIBLE_PROVIDER.md` |
+| Activation Barrier (gate board B behind board A) | Read `~/.claude/skills/boardy-vip/specs/ACTIVATION_BARRIER.md` |
 | Service / UseCase / Repository | Read `~/.claude/skills/boardy-vip/specs/SERVICE_LAYER.md` |
 | Cross-module service sharing | Read `~/.claude/skills/boardy-vip/specs/CROSS_MODULE_DI.md` |
 | Code review | `boardy-review` skill → spec: `REVIEWER_CHECKLIST.md` |
