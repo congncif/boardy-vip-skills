@@ -32,6 +32,8 @@ git diff skills/boardy-vip/specs/
 
 Collect the list of changed specs. For each changed spec, consult the mapping tables below.
 
+> **Note:** If any SKILL.md requires behavioral update (sections 3–5 below), you must run `--bump-version` at the end of the process — before committing. See § 7 step 6.
+
 ---
 
 ## 3. Spec → Skill mapping
@@ -272,6 +274,12 @@ Run a quick grep to catch stale references:
 ```bash
 grep -r "specs/" skills/*/SKILL.md | grep -v "boardy-vip/specs"
 # Should return nothing — all spec paths must be under boardy-vip/specs/
+```
+
+6. **Version bump** — did any SKILL.md content change (manually or via sync)? If yes, run `--bump-version` before committing. Confirm with:
+```bash
+grep "^version:" skills/*/SKILL.md
+./sync.sh /path/to/rules/ --bump-version
 ```
 
 ---
