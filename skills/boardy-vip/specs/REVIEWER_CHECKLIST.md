@@ -230,8 +230,9 @@
 - [ ] Never `rootViewController.returnHere()` or `rootViewController.backToPrevious()` — always via bus to specific ViewController
 
 ### Alert/Modal Presentation
-- [ ] Alerts/modals presented on `rootViewController.topPresentedViewController`
-- [ ] Never presents on bare `rootViewController` or stale `context`
+- [ ] Current-screen alerts/sheets may be presented directly by the current ViewController when the message is pure rendering for that screen
+- [ ] Cross-board, cross-flow, or stale-context-risk alerts/modals present on `rootViewController.topPresentedViewController`
+- [ ] Never presents out-of-scope UI on bare `rootViewController` or stale `context`
 - [ ] Sheet presentation configured if needed (detents, grabber)
 - [ ] No "detached view controller" warnings in console
 

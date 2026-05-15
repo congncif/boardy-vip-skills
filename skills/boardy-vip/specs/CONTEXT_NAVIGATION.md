@@ -11,7 +11,8 @@
 
 1. **Simple back navigation** — `backToPrevious()` called on the **current ViewController** via bus
 2. **Targeted return navigation** — `returnHere()` called on the **destination ViewController** via bus when flow completes
-3. **Safe presentation** — always present alerts/modals on `topPresentedViewController` to avoid detached view controller warnings
+3. **Local presentation is allowed in the current ViewController** — alerts/sheets that purely render the current screen's state may be presented by that ViewController
+4. **Out-of-scope presentation goes through Board-safe context** — alerts/modals managed by another board, cross-flow confirmation, or presentation whose correct context is not the current ViewController must use `rootViewController.topPresentedViewController`
 
 ---
 
@@ -201,9 +202,11 @@ extension {ChildName}Board: {ChildName}Delegate {
 
 ---
 
-## Pattern 3: Safe Alert/Modal Presentation
+## Pattern 3: Local vs Out-of-Scope Alert/Modal Presentation
 
-Use when: presenting alerts, modals, or any view controller that needs to appear on top.
+Use local ViewController presentation when the alert/sheet is a pure rendering concern for the current screen, such as validation feedback, purchase result messages, or a confirmation whose data and lifecycle belong entirely to that ViewController.
+
+Use Board-safe topmost presentation when the alert/modal is out of scope of the current ViewController: another Board owns it, the current context lacks enough information to choose the presenter, the presentation crosses flow boundaries, or the current context may already be stale/dismissed.
 
 ### Diagram
 
@@ -241,7 +244,21 @@ This happens when:
 - Another modal is already presented
 - The context has been dismissed but still holds a reference
 
-### Solution: Always present on topPresentedViewController
+### Solution: choose presenter by ownership
+
+If the current ViewController owns the message and is still the active context, present locally:
+
+```swift
+private extension {FeatureName}ViewController {
+    func presentAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+}
+```
+
+If the presentation is out of scope of the current ViewController, present on `topPresentedViewController` from the Board:
 
 ```swift
 // ✅ CORRECT — present on top of the presentation chain
@@ -296,7 +313,7 @@ extension UIViewController {
 }
 ```
 
-**Key insight:** Always use `rootViewController.topPresentedViewController` for alerts and modals to ensure they appear on the topmost view controller in the presentation chain.
+**Key insight:** Presentation ownership determines the presenter. Current-screen alerts/sheets can be presented by the current ViewController. Cross-board, cross-flow, or stale-context-risk presentations use `rootViewController.topPresentedViewController` so they appear on the topmost view controller in the presentation chain.
 
 ---
 
@@ -337,7 +354,8 @@ motherboard.serviceMap.mod{ModuleName}Plugins
 |-------------|----------------|-----------------|
 | `rootViewController.backToPrevious()` | `rootViewController` is root context, not current VC | Connect bus to current ViewController: `cancelBus.connect(target: component.userInterface) { $0.backToPrevious() }` |
 | `rootViewController.returnHere()` | `rootViewController` is root context, not destination VC | Connect bus to destination ViewController: `returnBus.connect(target: component.userInterface) { $0.returnHere() }` |
-| `context?.present(alert, ...)` | Context may be dismissed/detached | `rootViewController.topPresentedViewController.present(...)` |
+| `context?.present(alert, ...)` for out-of-scope presentation | Context may be dismissed/detached | `rootViewController.topPresentedViewController.present(...)` |
+| Delegating every local alert to Board | Adds routing ceremony for current-screen rendering | Present local alerts/sheets directly from the current ViewController when it owns the message and context |
 | Child Board navigating directly | Breaks coordinator pattern | Child sends output; coordinator handles navigation via registerFlows() |
 | Calling navigation methods without bus | Tight coupling, no lifecycle safety | Always use Bus to decouple Board from ViewController lifecycle |
 
@@ -361,8 +379,9 @@ motherboard.serviceMap.mod{ModuleName}Plugins
 - [ ] Never `rootViewController.returnHere()` — always via bus to specific ViewController
 
 ### Alert/Modal Presentation
-- [ ] Always presents on `rootViewController.topPresentedViewController`
-- [ ] Never presents on bare `rootViewController` or stale `context`
+- [ ] Current-screen alerts/sheets may be presented directly by the current ViewController when the message is pure rendering for that screen
+- [ ] Cross-board, cross-flow, or stale-context-risk alerts/modals present on `rootViewController.topPresentedViewController`
+- [ ] Never presents out-of-scope UI on bare `rootViewController` or stale `context`
 - [ ] Sheet presentation configured if needed (detents, grabber)
 - [ ] No "detached view controller" warnings in console
 

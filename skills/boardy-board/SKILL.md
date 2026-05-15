@@ -286,6 +286,9 @@ returnBus.connect(target: component.userInterface) { vc in
 }
 // Transport returnBus from registerFlows() on child completion
 
-// Alerts always on topmost VC
+// Local current-screen alert/sheet
+present(alert, animated: true)
+
+// Out-of-scope, cross-board, or stale-context-risk alert/modal
 rootViewController.topPresentedViewController.present(alert, animated: true)
 ```
