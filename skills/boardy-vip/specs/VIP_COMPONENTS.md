@@ -2,7 +2,7 @@
 
 > **Load this spec** when implementing Protocols, Interactor, Presenter, ViewController, or Builder for a Microboard.
 > Reference: *Modern large-scale iOS app development* — Business Application layer inside Domain-driven Layered pillar.
-> Companion specs: `@.claude/rules/ARCHITECTURE.md` (overall picture), `@.claude/rules/MICROBOARD_UI.md` (Board shell), `@.claude/rules/EXAMPLES_VIP_BOARD.md` (concrete skeleton).
+> Companion specs: `.claude/rules/ARCHITECTURE.md` (overall picture), `.claude/rules/MICROBOARD_UI.md` (Board shell), `.claude/rules/EXAMPLES_VIP_BOARD.md` (concrete skeleton).
 
 ## VIP Architecture Overview
 

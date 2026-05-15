@@ -1,7 +1,7 @@
 <!-- Created by claude-opus-4-7 on 2026-05-09 -->
 # QUICK_REF — Boardy+VIP Master Reference
 
-> Load this file **first** for every task. Then load the task-specific spec below.
+> Read this file **first** for every task using the Read tool. Then use the Read tool to load exactly the one task-specific spec from the routing table below. Do not pre-load other specs speculatively.
 
 ---
 
@@ -9,26 +9,26 @@
 
 | Task | Load next |
 |------|-----------|
-| Architecture overview / runtime composition | `@.claude/rules/ARCHITECTURE.md` |
-| SDK-first / dependency choice | `@.claude/rules/SDK_FIRST.md` |
-| 3-layer dependency rule / cross-layer boundary | `@.claude/rules/LAYERING.md` |
-| Project-specific values (scheme, simulator, paths) | `@.claude/rules/PROJECT_CONFIG.md` |
-| New module | `@.claude/rules/MODULE_CREATION.md` |
-| IO / BoardID / InOut / ServiceMap | `@.claude/rules/IO_INTERFACE.md` |
-| Microboard with UI (VIP) | `@.claude/rules/MICROBOARD_UI.md` + `@.claude/rules/VIP_COMPONENTS.md` |
-| Microboard without UI | `@.claude/rules/MICROBOARD_NONUI.md` (read Decision Tree first!) |
-| Cross-module service sharing | `@.claude/rules/CROSS_MODULE_DI.md` |
-| Service / UseCase / Repository / Infra | `@.claude/rules/SERVICE_LAYER.md` |
-| Board communication / Bus / flows | `@.claude/rules/COMMUNICATION.md` |
-| Context navigation / backToPrevious / returnHere / alerts | `@.claude/rules/CONTEXT_NAVIGATION.md` |
-| Plugin / LauncherPlugin | `@.claude/rules/PLUGINS_INTEGRATION.md` |
-| ComposableBoard / TabBar | `@.claude/rules/COMPOSABLE_BOARD.md` |
-| Per-activation services / concurrency guard / routing config in Controller | `@.claude/rules/PER_ACTIVATION_RESOURCES.md` |
-| Multiple interchangeable providers / OCP extensible backend selection | `@.claude/rules/EXTENSIBLE_PROVIDER.md` |
-| Gate board activation behind another board (ad before session, permission check, login wall) | `@.claude/rules/ACTIVATION_BARRIER.md` |
-| Testing | `@.claude/rules/TESTING.md` |
-| Code review | `@.claude/rules/REVIEWER_CHECKLIST.md` only |
-| Code example | `@.claude/rules/EXAMPLES.md` (index) → load matching `EXAMPLES_*.md` |
+| Architecture overview / runtime composition | `.claude/rules/ARCHITECTURE.md` |
+| SDK-first / dependency choice | `.claude/rules/SDK_FIRST.md` |
+| 3-layer dependency rule / cross-layer boundary | `.claude/rules/LAYERING.md` |
+| Project-specific values (scheme, simulator, paths) | `.claude/rules/PROJECT_CONFIG.md` |
+| New module | `.claude/rules/MODULE_CREATION.md` |
+| IO / BoardID / InOut / ServiceMap | `.claude/rules/IO_INTERFACE.md` |
+| Microboard with UI (VIP) | `.claude/rules/MICROBOARD_UI.md` + `.claude/rules/VIP_COMPONENTS.md` |
+| Microboard without UI | `.claude/rules/MICROBOARD_NONUI.md` (read Decision Tree first!) |
+| Cross-module service sharing | `.claude/rules/CROSS_MODULE_DI.md` |
+| Service / UseCase / Repository / Infra | `.claude/rules/SERVICE_LAYER.md` |
+| Board communication / Bus / flows | `.claude/rules/COMMUNICATION.md` |
+| Context navigation / backToPrevious / returnHere / alerts | `.claude/rules/CONTEXT_NAVIGATION.md` |
+| Plugin / LauncherPlugin | `.claude/rules/PLUGINS_INTEGRATION.md` |
+| ComposableBoard / TabBar | `.claude/rules/COMPOSABLE_BOARD.md` |
+| Per-activation services / concurrency guard / routing config in Controller | `.claude/rules/PER_ACTIVATION_RESOURCES.md` |
+| Multiple interchangeable providers / OCP extensible backend selection | `.claude/rules/EXTENSIBLE_PROVIDER.md` |
+| Gate board activation behind another board (ad before session, permission check, login wall) | `.claude/rules/ACTIVATION_BARRIER.md` |
+| Testing | `.claude/rules/TESTING.md` |
+| Code review | `.claude/rules/REVIEWER_CHECKLIST.md` only |
+| Code example | `.claude/rules/EXAMPLES.md` (index) → load matching `EXAMPLES_*.md` |
 
 > **Non-UI Board type — decide before writing any code:**
 > 0. Does a VIP UI board already serve as the entry point to this flow? → **Let that VIP board be the coordinator** via `registerFlows()`. Do NOT wrap it with a Non-UI FlowBoard. A VIP board with UI can own and coordinate its child boards — the entry-screen board acts as coordinator itself. Proceed to 1–3 only when no UI board can serve as anchor.
@@ -259,14 +259,14 @@ s.dependency 'Boardy'          # correct
 
 ## 9. Example Dictionary
 
-Load `@.claude/rules/EXAMPLES.md` (index, ~20 lines) to find which example file to load.
+Load `.claude/rules/EXAMPLES.md` (index, ~20 lines) to find which example file to load.
 Each example file is a self-contained work unit -- load exactly one.
 
 | Work Unit | Example File |
 |-----------|--------------|
-| IO layer | `@.claude/rules/EXAMPLES_IO.md` |
-| Plugin layer | `@.claude/rules/EXAMPLES_PLUGIN.md` |
-| Full VIP UI Board (6 files) | `@.claude/rules/EXAMPLES_VIP_BOARD.md` |
-| Viewless Board (4 files) | `@.claude/rules/EXAMPLES_VIEWLESS_BOARD.md` |
-| Flow Board / BlockTask Board | `@.claude/rules/EXAMPLES_NONUI_BOARDS.md` |
-| Service layer | `@.claude/rules/EXAMPLES_SERVICE.md` |
+| IO layer | `.claude/rules/EXAMPLES_IO.md` |
+| Plugin layer | `.claude/rules/EXAMPLES_PLUGIN.md` |
+| Full VIP UI Board (6 files) | `.claude/rules/EXAMPLES_VIP_BOARD.md` |
+| Viewless Board (4 files) | `.claude/rules/EXAMPLES_VIEWLESS_BOARD.md` |
+| Flow Board / BlockTask Board | `.claude/rules/EXAMPLES_NONUI_BOARDS.md` |
+| Service layer | `.claude/rules/EXAMPLES_SERVICE.md` |

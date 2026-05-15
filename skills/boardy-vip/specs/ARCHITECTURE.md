@@ -10,11 +10,11 @@
 
 | # | Pillar | Goal | Spec |
 |---|--------|------|------|
-| 1 | **SDK-first** | Prefer first-party platform frameworks; minimize third-party surface | `@.claude/rules/SDK_FIRST.md` |
-| 2 | **Modular + Interface Module** | Split each feature into a public **Interface Module** (`{Module}` / IO) and a private **Implementation Module** (`{Module}Plugins` / Sources). Other features depend only on the Interface Module. | `@.claude/rules/MODULE_CREATION.md`, `@.claude/rules/IO_INTERFACE.md` |
-| 3 | **Plugins composition** | Apps assemble at runtime via `PluginLauncher` + `LauncherPlugin` + `ModulePlugin` + `URLOpenerPlugin`. The host is the app entry file declared by `@.claude/rules/PROJECT_CONFIG.md`. | `@.claude/rules/PLUGINS_INTEGRATION.md` |
-| 4 | **Micro-services Composable (Boardy)** | Boards are independently activatable services. The Motherboard is the gateway; `BoardProducer` is the registry; `ActivatableBoard` / `InteractableBoard` are the contracts. | `@.claude/rules/MICROBOARD_UI.md`, `@.claude/rules/MICROBOARD_NONUI.md`, `@.claude/rules/COMMUNICATION.md`, `@.claude/rules/COMPOSABLE_BOARD.md` |
-| 5 | **Domain-Driven Layering** | Pure domain core; Business Application (VIP) on top; Infrastructure & UI at the edges. Dependencies point inward. | `@.claude/rules/LAYERING.md`, `@.claude/rules/SERVICE_LAYER.md`, `@.claude/rules/VIP_COMPONENTS.md` |
+| 1 | **SDK-first** | Prefer first-party platform frameworks; minimize third-party surface | `.claude/rules/SDK_FIRST.md` |
+| 2 | **Modular + Interface Module** | Split each feature into a public **Interface Module** (`{Module}` / IO) and a private **Implementation Module** (`{Module}Plugins` / Sources). Other features depend only on the Interface Module. | `.claude/rules/MODULE_CREATION.md`, `.claude/rules/IO_INTERFACE.md` |
+| 3 | **Plugins composition** | Apps assemble at runtime via `PluginLauncher` + `LauncherPlugin` + `ModulePlugin` + `URLOpenerPlugin`. The host is the app entry file declared by `.claude/rules/PROJECT_CONFIG.md`. | `.claude/rules/PLUGINS_INTEGRATION.md` |
+| 4 | **Micro-services Composable (Boardy)** | Boards are independently activatable services. The Motherboard is the gateway; `BoardProducer` is the registry; `ActivatableBoard` / `InteractableBoard` are the contracts. | `.claude/rules/MICROBOARD_UI.md`, `.claude/rules/MICROBOARD_NONUI.md`, `.claude/rules/COMMUNICATION.md`, `.claude/rules/COMPOSABLE_BOARD.md` |
+| 5 | **Domain-Driven Layering** | Pure domain core; Business Application (VIP) on top; Infrastructure & UI at the edges. Dependencies point inward. | `.claude/rules/LAYERING.md`, `.claude/rules/SERVICE_LAYER.md`, `.claude/rules/VIP_COMPONENTS.md` |
 
 ---
 
@@ -91,7 +91,7 @@ A consumer module **must depend on `{Module}` only** — never on `{Module}Plugi
    .ioBoardX     .ioBoardY (cross-module via IO only)  ...
 ```
 
-Activation always traverses `motherboard.serviceMap.mod{Module}.io{Board}.activation.activate(with:)` — never a direct class reference. See `@.claude/rules/COMMUNICATION.md` for the activation / flow / interaction triad.
+Activation always traverses `motherboard.serviceMap.mod{Module}.io{Board}.activation.activate(with:)` — never a direct class reference. See `.claude/rules/COMMUNICATION.md` for the activation / flow / interaction triad.
 
 ---
 
@@ -116,13 +116,13 @@ Strict invariants:
 4. **Board is stateless** — all per-session state lives in the Interactor (UI boards) or Controller (Viewless boards).
 5. **Unidirectional flow** — events propagate `View → Interactor → UseCase → Presenter → View`.
 
-Full rules in `@.claude/rules/VIP_COMPONENTS.md`. See `@.claude/rules/MICROBOARD_UI.md` for UI boards and `@.claude/rules/MICROBOARD_NONUI.md` for the non-UI variants (Flow / BlockTask / Task / Result / Barrier / Viewless / Empty).
+Full rules in `.claude/rules/VIP_COMPONENTS.md`. See `.claude/rules/MICROBOARD_UI.md` for UI boards and `.claude/rules/MICROBOARD_NONUI.md` for the non-UI variants (Flow / BlockTask / Task / Result / Barrier / Viewless / Empty).
 
 ---
 
 ## 6. Cross-Module Service Sharing
 
-When a service must be consumed by more than one module, follow `@.claude/rules/CROSS_MODULE_DI.md`:
+When a service must be consumed by more than one module, follow `.claude/rules/CROSS_MODULE_DI.md`:
 
 1. **Pattern A (preferred)** — wrap the service in a `BlockTaskBoard`, expose it through the owner's Interface Module. Consumers activate via `motherboard.serviceMap.mod{Owner}.io{Service}`.
 2. **Pattern B (secondary)** — split the protocol into a third pod `{Module}Core`; resolve via `Resolver` (`@LazyInjected`) at activation time.
@@ -133,25 +133,25 @@ Never depend on `{Module}Plugins` from another module. Library/utility-only modu
 
 ## 7. Spec Routing
 
-Use `@.claude/rules/QUICK_REF.md` for the day-to-day routing table. This file is the high-level orientation; `@.claude/rules/QUICK_REF.md` is the operational index.
+Use `.claude/rules/QUICK_REF.md` for the day-to-day routing table. This file is the high-level orientation; `.claude/rules/QUICK_REF.md` is the operational index.
 
 | You are about to... | Read |
 |---------------------|------|
-| Scaffold a new module | `@.claude/rules/MODULE_CREATION.md` |
-| Define a public board's IO | `@.claude/rules/IO_INTERFACE.md` |
-| Build a UI board | `@.claude/rules/MICROBOARD_UI.md` + `@.claude/rules/VIP_COMPONENTS.md` |
-| Build a non-UI board | `@.claude/rules/MICROBOARD_NONUI.md` (Decision Tree first) |
-| Wire a Plugin / Launcher | `@.claude/rules/PLUGINS_INTEGRATION.md` |
-| Compose tabs / sections | `@.claude/rules/COMPOSABLE_BOARD.md` |
-| Author UseCases / repositories / domain models | `@.claude/rules/SERVICE_LAYER.md` + `@.claude/rules/LAYERING.md` |
-| Connect boards (activation / flow / bus) | `@.claude/rules/COMMUNICATION.md` |
-| Share a service across modules | `@.claude/rules/CROSS_MODULE_DI.md` |
-| Write tests | `@.claude/rules/TESTING.md` |
-| Review code | `@.claude/rules/REVIEWER_CHECKLIST.md` |
-| Look up a code skeleton | `@.claude/rules/EXAMPLES.md` (index) |
+| Scaffold a new module | `.claude/rules/MODULE_CREATION.md` |
+| Define a public board's IO | `.claude/rules/IO_INTERFACE.md` |
+| Build a UI board | `.claude/rules/MICROBOARD_UI.md` + `.claude/rules/VIP_COMPONENTS.md` |
+| Build a non-UI board | `.claude/rules/MICROBOARD_NONUI.md` (Decision Tree first) |
+| Wire a Plugin / Launcher | `.claude/rules/PLUGINS_INTEGRATION.md` |
+| Compose tabs / sections | `.claude/rules/COMPOSABLE_BOARD.md` |
+| Author UseCases / repositories / domain models | `.claude/rules/SERVICE_LAYER.md` + `.claude/rules/LAYERING.md` |
+| Connect boards (activation / flow / bus) | `.claude/rules/COMMUNICATION.md` |
+| Share a service across modules | `.claude/rules/CROSS_MODULE_DI.md` |
+| Write tests | `.claude/rules/TESTING.md` |
+| Review code | `.claude/rules/REVIEWER_CHECKLIST.md` |
+| Look up a code skeleton | `.claude/rules/EXAMPLES.md` (index) |
 
 ---
 
 ## 8. Project Binding
 
-This document is generic. Project-specific names, schemes, simulators, and remote URLs live in `@.claude/rules/PROJECT_CONFIG.md`. When a spec references `{Workspace}`, `{MainScheme}`, `{Simulator}`, `{BaseBranch}`, etc., resolve them through `@.claude/rules/PROJECT_CONFIG.md`.
+This document is generic. Project-specific names, schemes, simulators, and remote URLs live in `.claude/rules/PROJECT_CONFIG.md`. When a spec references `{Workspace}`, `{MainScheme}`, `{Simulator}`, `{BaseBranch}`, etc., resolve them through `.claude/rules/PROJECT_CONFIG.md`.

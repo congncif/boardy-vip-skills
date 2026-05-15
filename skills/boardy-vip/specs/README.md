@@ -9,21 +9,21 @@ Generic design and execution standards for modular iOS apps built with Boardy, V
 
 | # | Pillar | Rule home |
 |---|--------|-----------|
-| 1 | SDK-first | `@.claude/rules/SDK_FIRST.md` |
-| 2 | Modular + Interface Module | `@.claude/rules/MODULE_CREATION.md`, `@.claude/rules/IO_INTERFACE.md` |
-| 3 | Plugin Architecture | `@.claude/rules/PLUGINS_INTEGRATION.md` |
-| 4 | Micro-services Composable | `@.claude/rules/MICROBOARD_UI.md`, `@.claude/rules/MICROBOARD_NONUI.md`, `@.claude/rules/COMMUNICATION.md`, `@.claude/rules/COMPOSABLE_BOARD.md` |
-| 5 | Domain-driven Layered | `@.claude/rules/ARCHITECTURE.md`, `@.claude/rules/LAYERING.md`, `@.claude/rules/SERVICE_LAYER.md`, `@.claude/rules/VIP_COMPONENTS.md` |
+| 1 | SDK-first | `.claude/rules/SDK_FIRST.md` |
+| 2 | Modular + Interface Module | `.claude/rules/MODULE_CREATION.md`, `.claude/rules/IO_INTERFACE.md` |
+| 3 | Plugin Architecture | `.claude/rules/PLUGINS_INTEGRATION.md` |
+| 4 | Micro-services Composable | `.claude/rules/MICROBOARD_UI.md`, `.claude/rules/MICROBOARD_NONUI.md`, `.claude/rules/COMMUNICATION.md`, `.claude/rules/COMPOSABLE_BOARD.md` |
+| 5 | Domain-driven Layered | `.claude/rules/ARCHITECTURE.md`, `.claude/rules/LAYERING.md`, `.claude/rules/SERVICE_LAYER.md`, `.claude/rules/VIP_COMPONENTS.md` |
 
 ---
 
 ## Quick Start
 
-1. Copy `@.claude/rules/` and `@.claude/agents/` into the target project.
-2. Fill `@.claude/rules/PROJECT_CONFIG.md` with project-specific values: workspace, scheme, simulator, module root, base branch, app entry file.
-3. Ensure project `@CLAUDE.md` says: load `@.claude/rules/QUICK_REF.md` first, then task-specific specs.
-4. Use `@.claude/rules/ADOPTION.md` as the migration checklist.
-5. Keep project-specific examples out of generic rule files; place them in `@.claude/rules/PROJECT_CONFIG.md`, project `@CLAUDE.md`, or feature PRDs.
+1. Copy `.claude/rules/` and `@.claude/agents/` into the target project.
+2. Fill `.claude/rules/PROJECT_CONFIG.md` with project-specific values: workspace, scheme, simulator, module root, base branch, app entry file.
+3. Ensure project `@CLAUDE.md` says: load `.claude/rules/QUICK_REF.md` first, then task-specific specs.
+4. Use `.claude/rules/ADOPTION.md` as the migration checklist.
+5. Keep project-specific examples out of generic rule files; place them in `.claude/rules/PROJECT_CONFIG.md`, project `@CLAUDE.md`, or feature PRDs.
 
 ---
 
@@ -31,19 +31,19 @@ Generic design and execution standards for modular iOS apps built with Boardy, V
 
 | I want to... | Load |
 |--------------|------|
-| Understand architecture | `@.claude/rules/QUICK_REF.md` → `@.claude/rules/ARCHITECTURE.md` |
-| Choose or add a dependency | `@.claude/rules/QUICK_REF.md` → `@.claude/rules/SDK_FIRST.md` |
-| Create a module | `@.claude/rules/QUICK_REF.md` → `@.claude/rules/MODULE_CREATION.md` → `@.claude/rules/IO_INTERFACE.md` |
-| Define public board IO | `@.claude/rules/QUICK_REF.md` → `@.claude/rules/IO_INTERFACE.md` |
-| Build a UI board | `@.claude/rules/QUICK_REF.md` → `@.claude/rules/MICROBOARD_UI.md` → `@.claude/rules/VIP_COMPONENTS.md` |
-| Build a non-UI board | `@.claude/rules/QUICK_REF.md` → `@.claude/rules/MICROBOARD_NONUI.md` |
-| Wire board communication | `@.claude/rules/QUICK_REF.md` → `@.claude/rules/COMMUNICATION.md` |
-| Add plugin integration | `@.claude/rules/QUICK_REF.md` → `@.claude/rules/PLUGINS_INTEGRATION.md` |
-| Share service across modules | `@.claude/rules/QUICK_REF.md` → `@.claude/rules/CROSS_MODULE_DI.md` |
-| Implement service layer | `@.claude/rules/QUICK_REF.md` → `@.claude/rules/SERVICE_LAYER.md` → `@.claude/rules/LAYERING.md` |
-| Write tests | `@.claude/rules/QUICK_REF.md` → `@.claude/rules/TESTING.md` |
-| Review code | `@.claude/rules/QUICK_REF.md` → `@.claude/rules/REVIEWER_CHECKLIST.md` |
-| Find skeleton code | `@.claude/rules/QUICK_REF.md` → `@.claude/rules/EXAMPLES.md` → one matching `EXAMPLES_*.md` |
+| Understand architecture | `.claude/rules/QUICK_REF.md` → `.claude/rules/ARCHITECTURE.md` |
+| Choose or add a dependency | `.claude/rules/QUICK_REF.md` → `.claude/rules/SDK_FIRST.md` |
+| Create a module | `.claude/rules/QUICK_REF.md` → `.claude/rules/MODULE_CREATION.md` → `.claude/rules/IO_INTERFACE.md` |
+| Define public board IO | `.claude/rules/QUICK_REF.md` → `.claude/rules/IO_INTERFACE.md` |
+| Build a UI board | `.claude/rules/QUICK_REF.md` → `.claude/rules/MICROBOARD_UI.md` → `.claude/rules/VIP_COMPONENTS.md` |
+| Build a non-UI board | `.claude/rules/QUICK_REF.md` → `.claude/rules/MICROBOARD_NONUI.md` |
+| Wire board communication | `.claude/rules/QUICK_REF.md` → `.claude/rules/COMMUNICATION.md` |
+| Add plugin integration | `.claude/rules/QUICK_REF.md` → `.claude/rules/PLUGINS_INTEGRATION.md` |
+| Share service across modules | `.claude/rules/QUICK_REF.md` → `.claude/rules/CROSS_MODULE_DI.md` |
+| Implement service layer | `.claude/rules/QUICK_REF.md` → `.claude/rules/SERVICE_LAYER.md` → `.claude/rules/LAYERING.md` |
+| Write tests | `.claude/rules/QUICK_REF.md` → `.claude/rules/TESTING.md` |
+| Review code | `.claude/rules/QUICK_REF.md` → `.claude/rules/REVIEWER_CHECKLIST.md` |
+| Find skeleton code | `.claude/rules/QUICK_REF.md` → `.claude/rules/EXAMPLES.md` → one matching `EXAMPLES_*.md` |
 
 ---
 
@@ -57,9 +57,9 @@ The pack assumes an iOS project with:
 - App-level dependency configuration such as `Podfile` or equivalent package wiring.
 - Boardy `Motherboard`, `BoardProducer`, and `ServiceMap` usage.
 - Plugin host that installs `LauncherPlugin`s before launch.
-- Build/test commands documented outside generic specs, referenced via `@.claude/rules/PROJECT_CONFIG.md`.
+- Build/test commands documented outside generic specs, referenced via `.claude/rules/PROJECT_CONFIG.md`.
 
-If your project uses different folders or package tooling, update `@.claude/rules/PROJECT_CONFIG.md` and project `@CLAUDE.md`; do not hard-code those values into generic rules.
+If your project uses different folders or package tooling, update `.claude/rules/PROJECT_CONFIG.md` and project `@CLAUDE.md`; do not hard-code those values into generic rules.
 
 ---
 
@@ -84,7 +84,7 @@ If your project uses different folders or package tooling, update `@.claude/rule
 
 ## Non-Negotiables
 
-- Load `@.claude/rules/QUICK_REF.md` first.
+- Load `.claude/rules/QUICK_REF.md` first.
 - Keep Interface Modules public and Implementation Modules internal.
 - Consumers import Interface Modules only, never Plugins.
 - Board → Controller communication uses event buses, not stored/retrieved controller references.
@@ -93,4 +93,4 @@ If your project uses different folders or package tooling, update `@.claude/rule
 - Presenter is the only Domain → ViewModel mapper.
 - Domain stays pure: no UIKit, Boardy, networking SDKs, DTOs, or vendor types.
 - Concrete Builder structs are composition roots; Board depends on `Buildable` protocol only.
-- Project-specific values live in `@.claude/rules/PROJECT_CONFIG.md`.
+- Project-specific values live in `.claude/rules/PROJECT_CONFIG.md`.

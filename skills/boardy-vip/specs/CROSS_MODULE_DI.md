@@ -3,7 +3,7 @@
 
 > Load when a service (UseCase, Repository, domain operation) must be **consumed by more than one module**.
 > This replaces any pattern that passes implementations directly through `ServiceMap`, `sharedComponent`, or stored struct properties.
-> Companion specs: `@.claude/rules/LAYERING.md` (3-layer rule), `@.claude/rules/PLUGINS_INTEGRATION.md` (plugin registration).
+> Companion specs: `.claude/rules/LAYERING.md` (3-layer rule), `.claude/rules/PLUGINS_INTEGRATION.md` (plugin registration).
 
 ---
 

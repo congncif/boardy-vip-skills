@@ -3,7 +3,7 @@
 
 > **Load this spec** when handling navigation dismissal, presenting alerts/modals, or managing view controller context flow.
 > Reference: *Modern large-scale iOS app development* — Micro-services Composable pillar.
-> Companion specs: `@.claude/rules/COMMUNICATION.md` (Bus patterns), `@.claude/rules/MICROBOARD_UI.md` (Board lifecycle).
+> Companion specs: `.claude/rules/COMMUNICATION.md` (Bus patterns), `.claude/rules/MICROBOARD_UI.md` (Board lifecycle).
 
 ---
 
@@ -496,11 +496,11 @@ extension {ChildA}Board: {ChildA}Delegate {
 
 This spec complements:
 
-- **`@.claude/rules/COMMUNICATION.md`** — Bus patterns for Board↔Controller communication
-- **`@.claude/rules/MICROBOARD_UI.md`** — Board lifecycle and presentation basics
-- **`@.claude/rules/MICROBOARD_NONUI.md`** — Flow Board coordination patterns
+- **`.claude/rules/COMMUNICATION.md`** — Bus patterns for Board↔Controller communication
+- **`.claude/rules/MICROBOARD_UI.md`** — Board lifecycle and presentation basics
+- **`.claude/rules/MICROBOARD_NONUI.md`** — Flow Board coordination patterns
 
-Add to review checklist in `@.claude/rules/REVIEWER_CHECKLIST.md`:
+Add to review checklist in `.claude/rules/REVIEWER_CHECKLIST.md`:
 
 ```markdown
 ## Context Navigation (check every PR with navigation)

@@ -74,7 +74,7 @@
 - [ ] `s.dependency` has name only, no `:path =>`
 - [ ] Podfile uses `:path =>` (hash-rocket), not `path:` (keyword syntax)
 - [ ] `pod install` was run after any structural change
-- [ ] LauncherPlugin wired in the app entry file declared by `@.claude/rules/PROJECT_CONFIG.md` via `.install(launcherPlugin:)` before `.initialize()`
+- [ ] LauncherPlugin wired in the app entry file declared by `.claude/rules/PROJECT_CONFIG.md` via `.install(launcherPlugin:)` before `.initialize()`
 - [ ] App entry file imports `{ModuleNamePlugins}`, not `{ModuleName}`
 
 ---
@@ -208,7 +208,7 @@
 - [ ] ComposableBoard registered as `GuaranteedBoard` + activation sets up tabs
 - [ ] Each tab = one child board activated in `activate()`
 - [ ] Tab switching via `interaction` command, not direct board calls
-- [ ] Read `@.claude/rules/COMPOSABLE_BOARD.md` for full rules (not duplicated here)
+- [ ] Read `.claude/rules/COMPOSABLE_BOARD.md` for full rules (not duplicated here)
 
 ---
 

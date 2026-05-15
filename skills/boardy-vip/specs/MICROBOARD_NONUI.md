@@ -3,7 +3,7 @@
 
 > **Load this spec** when creating Microboards that have no UIViewController.
 > Reference: *Modern large-scale iOS app development* — Micro-services Composable pillar.
-> Companion specs: `@.claude/rules/MICROBOARD_UI.md` (UI board variant), `@.claude/rules/COMMUNICATION.md` (flow + bus patterns), `@.claude/rules/EXAMPLES_NONUI_BOARDS.md` / `@.claude/rules/EXAMPLES_VIEWLESS_BOARD.md` (concrete skeletons).
+> Companion specs: `.claude/rules/MICROBOARD_UI.md` (UI board variant), `.claude/rules/COMMUNICATION.md` (flow + bus patterns), `.claude/rules/EXAMPLES_NONUI_BOARDS.md` / `.claude/rules/EXAMPLES_VIEWLESS_BOARD.md` (concrete skeletons).
 
 ## Decision Tree
 
@@ -31,23 +31,23 @@ Is it a coordinator/flow orchestrator (activates child boards in sequence)?
     Does it need to STORE anything between child board interactions?
     (save a child's output to pass into / configure a later child)
         YES → Viewless Board  (pattern 4 below)
-        NO  → FlowBoard ← @.claude/rules/templates/module-template/Templates/Non-UI Board.xctemplate/Flow
+        NO  → FlowBoard ← .claude/rules/templates/module-template/Templates/Non-UI Board.xctemplate/Flow
 
 Is it a single async operation where the CALLER needs to handle its result per-activation?
-    YES → BlockTaskBoard ← @.claude/rules/templates/module-template/Templates/Non-UI Board.xctemplate/Block Task
+    YES → BlockTaskBoard ← .claude/rules/templates/module-template/Templates/Non-UI Board.xctemplate/Block Task
         └─ Caller activates with BlockTaskParameter (bundles onSuccess/onProgress/onError per call)
         └─ Multiple concurrent activations handled independently
 
 Is it a single async operation where result goes to the motherboard output stream?
     Multiple activations in flight?    → BlockTaskBoard (concurrent mode)
-    One at a time (sequential)?        → TaskBoard  ← @.claude/rules/templates/module-template/Templates/Non-UI Board.xctemplate/Single Task
+    One at a time (sequential)?        → TaskBoard  ← .claude/rules/templates/module-template/Templates/Non-UI Board.xctemplate/Single Task
     Single activation, no side effects → ResultTaskBoard ← Single Result Task
 
 Need to block an action until a prerequisite completes (e.g. login before cart)?
-    YES → BarrierBoard ← @.claude/rules/templates/module-template/Templates/Non-UI Board.xctemplate/Barrier
+    YES → BarrierBoard ← .claude/rules/templates/module-template/Templates/Non-UI Board.xctemplate/Barrier
 
 Fully custom logic that doesn't fit above?
-    YES → Empty Board ← @.claude/rules/templates/module-template/Templates/Non-UI Board.xctemplate/Empty
+    YES → Empty Board ← .claude/rules/templates/module-template/Templates/Non-UI Board.xctemplate/Empty
 ```
 
 > **The VIP-board-as-coordinator rule:**
@@ -162,7 +162,7 @@ Multiple concurrent activations are handled independently (`executingType: .conc
 > **Why BlockTaskBoard is different from a regular Board:**
 > Regular Boards are event-driven services — all activations share one communication channel; callers cannot distinguish which output belongs to which input. `BlockTaskBoard` solves this by bundling per-call handlers directly in `BlockTaskParameter`. The framework routes each task's result to its own parameter's handlers automatically. The Board self-completes after all tasks finish (no manual `complete()` needed).
 
-**Template:** `@.claude/rules/templates/module-template/Templates/Non-UI Board.xctemplate/Block Task`
+**Template:** `.claude/rules/templates/module-template/Templates/Non-UI Board.xctemplate/Block Task`
 
 **⚠️ CRITICAL: Always call completion on MainActor**
 
@@ -233,7 +233,7 @@ case .{featureName}:
 Use when: the board performs one async operation at a time; result goes to the **motherboard output stream** (not per-activation).
 From Boardy 1.36, only one task executes at a time — use `BlockTaskBoard` for concurrent activations.
 
-**Template:** `@.claude/rules/templates/module-template/Templates/Non-UI Board.xctemplate/Single Task`
+**Template:** `.claude/rules/templates/module-template/Templates/Non-UI Board.xctemplate/Single Task`
 
 **⚠️ CRITICAL: Always call completion on MainActor**
 
@@ -269,7 +269,7 @@ Key differences from `BlockTaskBoard`:
 
 Use when: exactly one activation needed; result wrapped in `BoardResult`; no progress or error side effects.
 
-**Template:** `@.claude/rules/templates/module-template/Templates/Non-UI Board.xctemplate/Single Result Task`
+**Template:** `.claude/rules/templates/module-template/Templates/Non-UI Board.xctemplate/Single Result Task`
 
 ```swift
 enum {FeatureName}BoardFactory {
@@ -290,7 +290,7 @@ enum {FeatureName}BoardFactory {
 
 Use when: an action must be blocked until a prerequisite completes (e.g. user must log in before adding to cart).
 
-**Template:** `@.claude/rules/templates/module-template/Templates/Non-UI Board.xctemplate/Barrier`
+**Template:** `.claude/rules/templates/module-template/Templates/Non-UI Board.xctemplate/Barrier`
 
 ```swift
 // InOut.swift

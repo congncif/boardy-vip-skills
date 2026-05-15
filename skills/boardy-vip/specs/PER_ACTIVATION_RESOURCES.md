@@ -1,7 +1,7 @@
 # SPEC: Per-Activation Resource Management
 
 > **Load this spec** when a Board wraps a stateful service (SDK delegate, socket, streaming operation) that must be created fresh per activation and kept alive until the operation completes.
-> Companion specs: `@.claude/rules/MICROBOARD_NONUI.md` (Viewless Board), `@.claude/rules/COMMUNICATION.md` (Bus patterns, `complete()` semantics).
+> Companion specs: `.claude/rules/MICROBOARD_NONUI.md` (Viewless Board), `.claude/rules/COMMUNICATION.md` (Bus patterns, `complete()` semantics).
 
 ---
 
@@ -60,7 +60,7 @@ final class SomeBoard: ModernContinuableBoard, ... {
 
 **Requirements for `attachObject`:**
 - The object must be an `NSObject` subclass (Boardy `Attachable` protocol requirement)
-- `complete()` must be called only after ALL attached work is done — see `@.claude/rules/COMMUNICATION.md` for the full `complete()` semantics and when-to-call rules
+- `complete()` must be called only after ALL attached work is done — see `.claude/rules/COMMUNICATION.md` for the full `complete()` semantics and when-to-call rules
 
 > **`complete()` timing note:** For a Board that attaches a single service, call `complete()` in that service's completion callback. For a Board that attaches multiple tasks concurrently, call `complete()` only after the last task finishes — premature `complete()` releases all attached objects while others are still running.
 

@@ -2,7 +2,7 @@
 
 > **Load this spec** when a board's activation must be gated behind another board completing first — e.g. show an ad before a game session, enforce a permission check before a feature, gate a flow behind a login wall.
 > Reference: *Modern large-scale iOS app development* — Micro-services Composable pillar.
-> Companion specs: `@.claude/rules/MICROBOARD_NONUI.md` (non-UI board types), `@.claude/rules/PER_ACTIVATION_RESOURCES.md` (per-activation lifecycle), `@.claude/rules/COMMUNICATION.md` (`complete()` semantics).
+> Companion specs: `.claude/rules/MICROBOARD_NONUI.md` (non-UI board types), `.claude/rules/PER_ACTIVATION_RESOURCES.md` (per-activation lifecycle), `.claude/rules/COMMUNICATION.md` (`complete()` semantics).
 
 ---
 

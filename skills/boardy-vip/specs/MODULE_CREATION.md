@@ -3,7 +3,7 @@
 
 > **Load this spec** when creating a new module, scaffolding a feature module, or setting up a new submodule.
 > Reference: *Modern large-scale iOS app development* — Modular + Interface Module pillar.
-> Companion specs: `@.claude/rules/IO_INTERFACE.md` (IO layer details), `@.claude/rules/PLUGINS_INTEGRATION.md` (LauncherPlugin wiring), `@.claude/rules/PROJECT_CONFIG.md` (project-specific values).
+> Companion specs: `.claude/rules/IO_INTERFACE.md` (IO layer details), `.claude/rules/PLUGINS_INTEGRATION.md` (LauncherPlugin wiring), `.claude/rules/PROJECT_CONFIG.md` (project-specific values).
 
 ## Overview
 
@@ -119,7 +119,7 @@ xcodebuild -workspace {Workspace} -list
 xcodebuild build -workspace {Workspace} -scheme {MainScheme} -showdestinations
 ```
 
-Pick an available scheme and device from the output (or use `{Destination}` from `@.claude/rules/PROJECT_CONFIG.md` when present).
+Pick an available scheme and device from the output (or use `{Destination}` from `.claude/rules/PROJECT_CONFIG.md` when present).
 
 **Step 2: Build & filter output to essentials**
 
@@ -146,7 +146,7 @@ xcodebuild test -workspace {Workspace} -scheme {MainScheme} \
 
 ### Step 6 — Wire LauncherPlugin via PluginLauncher
 
-Find the app entry file that owns `UIWindow` (declared in `@.claude/rules/PROJECT_CONFIG.md`; commonly `SceneDelegate` for UIKit scene apps or `AppDelegate` for older UIKit apps).
+Find the app entry file that owns `UIWindow` (declared in `.claude/rules/PROJECT_CONFIG.md`; commonly `SceneDelegate` for UIKit scene apps or `AppDelegate` for older UIKit apps).
 
 **If PluginLauncher is not yet set up**, add it:
 
@@ -242,7 +242,7 @@ end
 
 The script is at `scripts/init-module.sh`. See the actual script file for full content. Key operations:
 
-1. Clones the module template repository configured for the project (for example: `{ModuleTemplateURL}` from `@.claude/rules/PROJECT_CONFIG.md`)
+1. Clones the module template repository configured for the project (for example: `{ModuleTemplateURL}` from `.claude/rules/PROJECT_CONFIG.md`)
 2. Replaces `__DAD__` → `{ModuleName}` throughout
 3. Replaces `___VARIABLE_moduleName___` → `{NoPrefixName}` throughout
 4. Sets ServiceMap property names: `mod{ModuleName}` and `mod{ModuleNamePlugins}`
