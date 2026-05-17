@@ -1,7 +1,7 @@
 ---
 name: boardy-review
 description: Use when reviewing a pull request or verifying implementation on a Boardy+VIP project — loads the full architecture compliance checklist from the bundled spec
-version: 1.1.2
+version: 1.1.3
 ---
 
 # Boardy+VIP Code Review

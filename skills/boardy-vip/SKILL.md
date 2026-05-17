@@ -1,7 +1,7 @@
 ---
 name: boardy-vip
 description: Use when starting any iOS development task on a Boardy+VIP project — routes to correct spec, provides naming conventions, board communication patterns, and the 10 non-negotiable architecture rules
-version: 1.1.3
+version: 1.1.4
 ---
 
 # Boardy+VIP Quick Reference
@@ -95,6 +95,8 @@ Use the Read tool to load the full spec when needed.
 8. **Board→Controller via event buses** — never store/retrieve controller reference
 9. **Domain is pure Swift** — no UIKit, no Boardy, no networking frameworks
 10. **`sharedRepository` on ModulePlugin** — never inside closures or BoardRegistration
+11. **Viewless board lifecycle is self-managed** — `attachObject(controller)` requires explicit release: `complete()` ends the session, `detachObject(_:)` releases a specific controller while keeping the Board alive; without explicit release, re-activation stacks controllers on buses → duplicate handler execution
+12. **BlockTaskBoard concurrent mode** — use parameter callbacks (`onSuccess`, `onError`) for per-activation results; `.flow.addTarget` is unreliable for `executingType: .concurrent` because `.flow` is shared across all activations; sequential mode may use `.flow` but callbacks are preferred
 
 ## Key Code Patterns
 

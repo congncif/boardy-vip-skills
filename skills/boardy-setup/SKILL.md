@@ -1,7 +1,7 @@
 ---
 name: boardy-setup
 description: Use when starting a brand-new iOS project with Boardy+VIP architecture — covers CLAUDE.md wiring, PROJECT_CONFIG.md setup, first module creation, and validation that the architecture is correctly bootstrapped
-version: 1.1.2
+version: 1.1.3
 ---
 
 # Boardy+VIP New Project Setup

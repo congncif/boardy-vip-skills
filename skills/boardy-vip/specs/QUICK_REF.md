@@ -209,7 +209,10 @@ public struct ProfileLauncherPlugin: LauncherPlugin {
 8. Double-activation guard only when the Board is explicitly single-session; all Board→Controller communication uses event buses, not retrieved controller references
 9. Domain layer is pure Swift — no UIKit, no Boardy, no network frameworks
 10. `sharedRepository` as stored property on ModulePlugin — never created inside closures
-11. `complete()` called at most once, only when Board has released all streams/observers; stateless boards rarely need it; `BlockTaskBoard` never needs it (auto-completes); double-`complete()` raises assertion
+11. Classify string literals by meaning before localization decisions: user-facing text content must come from Localizable strings (SwiftGen/module strings); non-linguistic constants such as URLs, identifiers, keys, file names, analytics event names, and config values do not belong in Localizable unless product explicitly needs locale-specific variants
+12. `complete()` called at most once, only when Board has released all streams/observers; stateless boards rarely need it; `BlockTaskBoard` never needs it (auto-completes); double-`complete()` raises assertion
+13. Viewless boards using `attachObject(controller)` manage their own lifecycle — release via `complete()` (ends session) or `detachObject(_:)` (releases specific controller, Board stays alive); without explicit release, re-activation stacks controllers on buses → duplicate handler execution per event
+14. `BlockTaskBoard` with `executingType: .concurrent` — use parameter callbacks (`onSuccess`, `onError`) for per-activation result routing; `.flow.addTarget` is unreliable because `.flow` is shared across all concurrent activations; for sequential (single-at-a-time) BlockTaskBoard, `.flow` is acceptable but parameter callbacks are preferred
 
 ---
 

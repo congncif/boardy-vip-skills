@@ -10,6 +10,7 @@
 
 - [ ] View has ZERO logic -- no conditionals, no business decisions
 - [ ] Unidirectional flow only: ViewController -> Interactor -> UseCase -> Presenter -> ViewController
+- [ ] String literals are classified by meaning before localization: user-facing text content uses Localizable strings (SwiftGen/module strings); URLs, identifiers, keys, file names, analytics event names, and config values are not localized unless they need locale-specific variants
 - [ ] All IO types are `public`; all Sources types are `internal` (no `public` in Sources/)
 - [ ] No module imports `{ModuleNamePlugins}` -- only IO modules are imported
 - [ ] All async UI updates in `await MainActor.run { [weak self] in ... }`
@@ -141,10 +142,14 @@
 - [ ] **Buses connected in `activate()`** — `bus.connect(target: controller) { ... }`
 - [ ] **Buses transported in `registerFlows()`** — `bus.transport(input: value)`
 - [ ] **NEVER store or retrieve controller reference directly** — use event buses for all Board→Controller communication in viewless boards
+- [ ] **Explicit controller release** — `attachObject` is self-managed; use `complete()` (end session) or `detachObject(_:)` (release controller, keep Board alive); without explicit release, re-activation stacks controllers on buses → duplicate handler execution per event
 
 ### BlockTask Board
 - [ ] Performs one async operation then `sendOutput()`
 - [ ] Handles both success and failure paths
+- [ ] **Concurrent mode**: results via parameter callbacks (`.onSuccess`, `.onError`); `.flow.addTarget` unreliable — result cannot be matched to originating activation
+- [ ] **Sequential mode**: `.flow.addTarget` acceptable; parameter callbacks preferred but optional
+- [ ] When using parameter callbacks: at least `onSuccess` provided — omitting silently drops the result
 
 ---
 

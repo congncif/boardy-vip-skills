@@ -566,6 +566,12 @@ Choose the appropriate context for attaching controller:
 - Root context: controller lives as long as root VC
 - Input context: controller lives as long as the caller's provided context (e.g., a presented navigation stack)
 
+> ⚠️ **`attachObject` is self-managed lifecycle.** Unlike VIP boards (where `watch(content:)` + window root replacement auto-releases the controller), `attachObject` keeps the controller alive until you explicitly release it. Release options:
+> - **`complete()`** — ends the Board session entirely; releases all attached objects and removes the Board from the Motherboard. Use when the flow is done.
+> - **`detachObject(_:)`** — releases a specific attached object without ending the Board session. Use when you want to start a fresh controller session on the same Board (e.g., sequential re-activations).
+>
+> If the controller is never released, re-activation attaches a second controller while the first stays alive — both subscribe to the same buses, causing duplicate handler execution per event. **Choose the right release mechanism for your flow pattern.**
+
 ### Key conventions
 
 | Rule | Detail |
@@ -678,6 +684,9 @@ func build(with identifier: BoardID,
 - [ ] Never call `completion()` directly from background thread
 - [ ] All async work wrapped in `Task { ... }`
 - [ ] Do NOT call `complete()` manually — BlockTaskBoard self-completes after all tasks finish
+- [ ] **Concurrent mode (`executingType: .concurrent`)**: results MUST use parameter callbacks — `.onSuccess(target:) { }`, `.onError(target:) { }`. Using `.flow.addTarget` is unreliable because `.flow` is shared across all concurrent activations; per-activation results cannot be distinguished
+- [ ] **Sequential mode (single activation at a time)**: `.flow.addTarget` is acceptable — BlockTaskBoard still calls `sendOutput()` and fires `.flow`; parameter callbacks are still preferred but `.flow` works when only one activation runs at a time
+- [ ] When using parameter callbacks, provide at least `onSuccess` — omitting callbacks silently drops the result
 
 ### Additional checklist for Viewless Board
 - [ ] Controller is `NSObject` subclass (required for `Attachable`)
@@ -690,4 +699,5 @@ func build(with identifier: BoardID,
 - [ ] All mutable state (`input`, use cases, flags) lives in Controller, not Board
 - [ ] Controller's `delegate` is `weak var`
 - [ ] Protocols file defines: `Controllable`, `ControlDelegate`, `Delegate`, `Interface`, `Buildable`
-- [ ] `complete()` called exactly once: after `sendOutput()`, after all streams are terminated
+- [ ] **Explicit controller release** — `attachObject` lifecycle is self-managed; choose `complete()` (ends session) or `detachObject(_:)` (releases specific controller, keeps Board alive); without explicit release, re-activation stacks controllers on buses → duplicate handler execution
+- [ ] `complete()` or `detach()` called after `sendOutput()`, after all streams for that controller are terminated

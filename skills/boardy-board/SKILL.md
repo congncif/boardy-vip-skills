@@ -1,7 +1,7 @@
 ---
 name: boardy-board
 description: Use when implementing a Boardy microboard — decides board type (UI VIP, Flow, BlockTask, Viewless), provides key patterns for Board shell, Builder, event buses, and complete()/sendOutput() semantics
-version: 1.1.2
+version: 1.1.3
 ---
 
 # Boardy+VIP Board Implementation
@@ -166,6 +166,15 @@ final class {Name}Board: ModernContinuableBoard, ... {
         component.controller.start()
     }
 }
+```
+
+> ⚠️ **`attachObject` lifecycle is self-managed.** Unlike `watch(content:)` on VIP boards, `attachObject` keeps the controller alive until explicitly released. Choose the right release path:
+> - **`complete()`** — ends the Board session; releases all attached objects; removes Board from Motherboard
+> - **`detachObject(_:)`** — releases a specific controller without ending the session; use for sequential re-activations on the same Board
+>
+> Without explicit release: re-activation attaches a second controller while the first stays alive — both subscribe to the same buses → duplicate handler execution per event.
+
+```swift
 
 extension {Name}Board: {Name}Delegate {
     func activateChild(context: UIViewController?) {
@@ -227,7 +236,7 @@ extension {Name}Controller: {Name}Controllable {
 |------------|-----------------|
 | Stateless VIP / Flow board | Usually NOT needed |
 | Flow board as root coordinator | YES — after sendOutput() |
-| Viewless board (Controller attached) | YES — after sendOutput() |
+| Viewless board (Controller attached) | YES — `complete()` ends session; OR `detachObject(_:)` to release specific controller while keeping Board alive |
 | BlockTaskBoard | NO — framework auto-completes |
 
 **Rules:**

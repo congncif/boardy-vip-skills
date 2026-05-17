@@ -6,6 +6,13 @@ Format: `version — date — summary`
 
 ---
 
+## 1.1.4 — 2026-05-17
+
+Spec sync from project rules — run `./sync.sh ... --bump-version`.
+
+- Updated bundled specs in `skills/boardy-vip/specs/`
+
+
 ## 1.1.2 — 2026-05-15
 
 Spec sync from project rules — run `./sync.sh ... --bump-version`.
