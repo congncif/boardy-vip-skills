@@ -26,9 +26,15 @@ That is your job. After `./sync.sh` completes, follow this guide.
 ## 2. Run sync — then diff
 
 ```bash
-./sync.sh /path/to/project/.claude/rules/
+./sync.sh /path/to/project/.ai/specs/
 git diff skills/boardy-vip/specs/
 ```
+
+> **Note:** `QUICK_REF.md` and `COMMIT_WORKFLOW.md` live in `.claude/rules/` (not `.ai/specs/`) — copy them manually when they change:
+> ```bash
+> cp /path/to/project/.claude/rules/QUICK_REF.md skills/boardy-vip/specs/
+> cp /path/to/project/.claude/rules/COMMIT_WORKFLOW.md skills/boardy-vip/specs/
+> ```
 
 Collect the list of changed specs. For each changed spec, consult the mapping tables below.
 
@@ -42,7 +48,7 @@ The table below shows: which spec → which SKILL.md → which **named section**
 
 | Changed spec | Affected skill | Affected section in SKILL.md |
 |---|---|---|
-| `QUICK_REF.md` | `boardy-vip` | Task → Spec Routing, Non-UI Board Decision Tree, Naming Conventions, 10 Non-Negotiable Rules, Key Code Patterns |
+| `QUICK_REF.md` *(in `.claude/rules/`, not `.ai/specs/`)* | `boardy-vip` | Task → Spec Routing, Non-UI Board Decision Tree, Naming Conventions, 10 Non-Negotiable Rules, Key Code Patterns |
 | `ARCHITECTURE.md` | `boardy-vip` | Module Folder Skeleton, Task → Spec Routing |
 | `MICROBOARD_NONUI.md` | `boardy-vip` | Non-UI Board Decision Tree |
 | `MICROBOARD_NONUI.md` | `boardy-board` | Board Type Decision, Flow Board, Viewless Board, complete() Semantics |
@@ -279,7 +285,7 @@ grep -r "specs/" skills/*/SKILL.md | grep -v "boardy-vip/specs"
 6. **Version bump** — did any SKILL.md content change (manually or via sync)? If yes, run `--bump-version` before committing. Confirm with:
 ```bash
 grep "^version:" skills/*/SKILL.md
-./sync.sh /path/to/rules/ --bump-version
+./sync.sh /path/to/project/.ai/specs/ --bump-version
 ```
 
 ---
@@ -293,7 +299,7 @@ grep "^version:" skills/*/SKILL.md
 | New spec file added and routing updated | **Yes — always bump** |
 | Spec file removed and routing updated | **Yes — always bump** |
 
-Run: `./sync.sh /path/to/rules/ --bump-version`
+Run: `./sync.sh /path/to/project/.ai/specs/ --bump-version`
 
 ---
 

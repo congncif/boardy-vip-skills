@@ -1,17 +1,22 @@
 #!/usr/bin/env bash
-# sync.sh — Copy architecture specs from a project's .claude/rules/ into skills/boardy-vip/specs/
+# sync.sh — Copy architecture specs from a project's .ai/specs/ into skills/boardy-vip/specs/
 #
 # Usage:
-#   ./sync.sh /path/to/project/.claude/rules/
-#   ./sync.sh /path/to/project/.claude/rules/ --bump-version
+#   ./sync.sh /path/to/project/.ai/specs/
+#   ./sync.sh /path/to/project/.ai/specs/ --bump-version
 #
 # Options:
 #   --bump-version   Increment patch version in all SKILL.md frontmatter and CHANGELOG.md
 #
 # What it does:
-#   1. Copies all .md files from the given rules/ directory to skills/boardy-vip/specs/
-#   2. Skips files that are project-specific bindings (PROJECT_CONFIG.md, PROJECT_STRUCTURE.md)
+#   1. Copies all .md files from the given .ai/specs/ directory to skills/boardy-vip/specs/
+#   2. Skips files that are project-specific bindings (PROJECT_CONFIG.md, PROJECT_STRUCTURE.md, ADOPTION.md)
 #   3. Optionally bumps the patch version (1.1.0 → 1.1.1) across all SKILL.md files
+#
+# NOTE: QUICK_REF.md and COMMIT_WORKFLOW.md live in .claude/rules/ (not .ai/specs/).
+# Copy them manually when they change:
+#   cp /path/to/project/.claude/rules/QUICK_REF.md skills/boardy-vip/specs/
+#   cp /path/to/project/.claude/rules/COMMIT_WORKFLOW.md skills/boardy-vip/specs/
 
 set -e
 
@@ -29,11 +34,11 @@ for arg in "$@"; do
 done
 
 if [[ -z "$SOURCE_RULES" || "$SOURCE_RULES" == --* ]]; then
-  echo "Usage: ./sync.sh /path/to/project/.claude/rules/ [--bump-version]"
+  echo "Usage: ./sync.sh /path/to/project/.ai/specs/ [--bump-version]"
   echo ""
   echo "Example:"
-  echo "  ./sync.sh ~/projects/QuizCombatApp/.claude/rules/"
-  echo "  ./sync.sh ~/projects/QuizCombatApp/.claude/rules/ --bump-version"
+  echo "  ./sync.sh ~/projects/QuizCombatApp/.ai/specs/"
+  echo "  ./sync.sh ~/projects/QuizCombatApp/.ai/specs/ --bump-version"
   exit 1
 fi
 
