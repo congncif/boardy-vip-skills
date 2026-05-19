@@ -1,7 +1,7 @@
 ---
 name: boardy-module
 description: Use when creating a new Boardy+VIP feature module — covers directory setup, podspec templates, LauncherPlugin wiring, and first module validation checklist
-version: 1.1.3
+version: 1.2.0
 ---
 
 # Boardy+VIP Module Creation
@@ -58,7 +58,11 @@ sh ../../scripts/init-module.sh DADProfile DAD
         └── Infra/
 ```
 
-### 5. Add Podfile Entries
+### 5. Wire the module into the dependency manager
+
+Branch on the project's `Dependency manager` value from `{ProjectConfigPath}` §3.
+
+#### 5a. CocoaPods path
 
 ```ruby
 # Always hash-rocket syntax, never keyword syntax
@@ -66,15 +70,48 @@ pod '{ModuleName}',        :path => '{ModuleRoot}/{ModuleName}'
 pod '{ModuleNamePlugins}', :path => '{ModuleRoot}/{ModuleName}'
 ```
 
-### 6. Run pod install
-
+Run:
 ```bash
 pod install
 ```
 
 > **Always run after**: new module, new pod dependency, changed `source_files` glob, new Swift files added outside Xcode.
 
-### 7. Wire LauncherPlugin
+#### 5b. SwiftPM path
+
+Create a single `Package.swift` at `{ModuleRoot}/{ModuleName}/Package.swift` exposing both targets:
+
+```swift
+// swift-tools-version: 5.9
+import PackageDescription
+
+let package = Package(
+    name: "{ModuleName}",
+    platforms: [.iOS(.v13)],
+    products: [
+        .library(name: "{ModuleName}", targets: ["{ModuleName}"]),
+        .library(name: "{ModuleName}Plugins", targets: ["{ModuleName}Plugins"]),
+    ],
+    dependencies: [
+        // .package(url: "https://github.com/congncif/boardy", from: "x.y.z"),
+    ],
+    targets: [
+        .target(name: "{ModuleName}", dependencies: ["Boardy"], path: "IO"),
+        .target(name: "{ModuleName}Plugins", dependencies: ["{ModuleName}", "Boardy", "SiFUtilities"], path: "Sources"),
+    ]
+)
+```
+
+Wire it into the app:
+- Xcode → app project → Package Dependencies → **Add Local…** → select `{ModuleRoot}/{ModuleName}/`
+- Add `{ModuleName}` and `{ModuleName}Plugins` to the app target's frameworks
+- No equivalent of `pod install`; SPM resolves on build.
+
+#### 5c. Both
+
+Apply 5a for app/workspace and 5b for module-internal package surface only where required. Avoid mixing for the same module unless there is a documented reason recorded under `{DecisionsPath}`.
+
+### 6. Wire LauncherPlugin
 
 Find the app entry file (SceneDelegate or AppDelegate):
 
@@ -91,9 +128,11 @@ PluginLauncher.with(options: .default)
     }
 ```
 
-## podspec Templates
+## Dependency manifests
 
-### IO podspec
+> Use the manifest type that matches the project's `Dependency manager` setting in `{ProjectConfigPath}` §3. CocoaPods projects get podspecs; SwiftPM projects get the single `Package.swift` from step 5b; "Both" projects ship both manifests.
+
+### CocoaPods — IO podspec
 
 ```ruby
 Pod::Spec.new do |s|
@@ -108,7 +147,7 @@ Pod::Spec.new do |s|
 end
 ```
 
-### Plugins podspec
+### CocoaPods — Plugins podspec
 
 ```ruby
 Pod::Spec.new do |s|
@@ -182,12 +221,12 @@ struct {Name}ModulePlugin: ModuleBuilderPlugin {
 ## Validation Checklist
 
 - [ ] Module at `{ModuleRoot}/{ModuleName}/` (not nested)
-- [ ] Two podspecs: IO + Plugins
-- [ ] IO: `source_files = 'IO/**/*.swift'`
-- [ ] Plugins: `source_files = 'Sources/**/*.swift'`
-- [ ] Podfile uses `:path =>` (hash-rocket)
-- [ ] `s.dependency` has name only (no `:path =>`)
-- [ ] `pod install` run
+- [ ] Dependency manifest matches `{ProjectConfigPath}` §3:
+  - CocoaPods → two podspecs (IO + Plugins) with hash-rocket Podfile entries, `s.dependency` name-only, `pod install` run
+  - SwiftPM → single `Package.swift` with two products and two `.target(path:)` entries, added to Xcode as a Local Package
+  - Both → both manifests present, no contradictions
+- [ ] IO scope: `IO/**/*.swift` (podspec `source_files` or SwiftPM `.target(path: "IO")`)
+- [ ] Plugins scope: `Sources/**/*.swift` (podspec `source_files` or SwiftPM `.target(path: "Sources")`)
 - [ ] LauncherPlugin wired in app entry file
 - [ ] App entry imports `{ModuleNamePlugins}`, not `{ModuleName}`
 - [ ] Build succeeds

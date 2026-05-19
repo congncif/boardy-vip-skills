@@ -26,15 +26,18 @@ That is your job. After `./sync.sh` completes, follow this guide.
 ## 2. Run sync — then diff
 
 ```bash
-./sync.sh /path/to/project/.ai/specs/
+./sync.sh /path/to/project
 git diff skills/boardy-vip/specs/
 ```
 
-> **Note:** `QUICK_REF.md` and `COMMIT_WORKFLOW.md` live in `.claude/rules/` (not `.ai/specs/`) — copy them manually when they change:
-> ```bash
-> cp /path/to/project/.claude/rules/QUICK_REF.md skills/boardy-vip/specs/
-> cp /path/to/project/.claude/rules/COMMIT_WORKFLOW.md skills/boardy-vip/specs/
-> ```
+The script auto-discovers two source directories under the project root:
+
+- `<project>/.ai/specs/` — architecture/pattern specs (ARCHITECTURE.md, MICROBOARD_*.md, LAYERING.md, …)
+- `<project>/.claude/rules/` — workflow/process specs (QUICK_REF.md, COMMIT_WORKFLOW.md, SPEC_SYNC.md, PLAN_EXECUTION.md, …)
+
+The script skips project-specific bindings (`PROJECT_CONFIG.md`, `PROJECT_STRUCTURE.md`, `ADOPTION.md`) and ignores project-specific ADRs under `.claude/project/decisions/` (those are concrete decisions, not portable patterns).
+
+> **Legacy form**: passing a single specs directory still works (the script treats it as the only source). Prefer the project-root form so all spec roots are picked up.
 
 Collect the list of changed specs. For each changed spec, consult the mapping tables below.
 
@@ -76,6 +79,9 @@ The table below shows: which spec → which SKILL.md → which **named section**
 | `TESTING.md` | *(no SKILL.md)* | Spec is read live. No update needed. |
 | `CONVENTIONS.md` | `boardy-vip` | Naming Conventions (if naming patterns change) |
 | `EXAMPLES*.md` | *(no SKILL.md)* | Examples are read live via boardy-vip routing. No update needed. |
+| `SPEC_SYNC.md` *(in `.claude/rules/`)* | `boardy-vip` | Task → Spec Routing (spec sync row). Bump if checklist rows change. |
+| `PLAN_EXECUTION.md` *(in `.claude/rules/`)* | *(no SKILL.md)* | Spec is read live. No update needed unless build-verification rule changes. |
+| `COMMIT_WORKFLOW.md` *(in `.claude/rules/`)* | *(no SKILL.md)* | Project-operational. Skip. |
 
 **Specs not listed above** (e.g. `COMMIT_WORKFLOW.md`, `ADOPTION.md`, `README.md`):  
 → These are project-operational docs. SKILL.md is not derived from them. Skip.

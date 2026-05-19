@@ -5,17 +5,17 @@ Use this checklist when installing the generic rules and agents into a new iOS p
 
 ---
 
-## 1. Copy Pack
+## 1. Install Pack
 
-- [ ] Copy `.claude/rules/` into the target project.
-- [ ] Copy `@.claude/agents/` into the target project.
-- [ ] Keep rule files generic; remove app names, domain names, concrete schemes, concrete simulators, and private URLs from copied docs.
+- [ ] Install the skill pack once on each developer machine: `cd /path/to/boardy-vip-skills && ./install.sh`. Plugin specs are then read live from `~/.claude/skills/boardy-vip/specs/` — no per-project copy.
+- [ ] (Optional) Copy `templates/` agents into the target project if the project uses Claude Code agents.
+- [ ] Keep project-specific values (app names, schemes, simulators, URLs) in `{ProjectConfigPath}` — not in the bundled specs.
 
 ---
 
 ## 2. Configure Project Values
 
-- [ ] Fill `.claude/rules/PROJECT_CONFIG.md`.
+- [ ] Fill `{ProjectConfigPath}`.
 - [ ] Set `{ProjectName}`.
 - [ ] Set `{Workspace}` or equivalent build container.
 - [ ] Set `{MainScheme}`.
@@ -30,8 +30,8 @@ Use this checklist when installing the generic rules and agents into a new iOS p
 
 ## 3. Update Project CLAUDE.md
 
-- [ ] Require loading `.claude/rules/QUICK_REF.md` first.
-- [ ] Route task-specific work through `.claude/rules/QUICK_REF.md`.
+- [ ] Require loading `QUICK_REF.md` first.
+- [ ] Route task-specific work through `QUICK_REF.md`.
 - [ ] Document project-only exceptions in `@CLAUDE.md`, not generic specs.
 - [ ] Document package manager commands and build commands in project docs.
 - [ ] Document commit/push policy.
@@ -61,8 +61,8 @@ Use this checklist when installing the generic rules and agents into a new iOS p
 
 ## 6. Validate First Module
 
-- [ ] Create one small module using `.claude/rules/MODULE_CREATION.md`.
-- [ ] Add one public board IO using `.claude/rules/IO_INTERFACE.md`.
+- [ ] Create one small module using `MODULE_CREATION.md`.
+- [ ] Add one public board IO using `IO_INTERFACE.md`.
 - [ ] Add one UI board or BlockTask board.
 - [ ] Register ModulePlugin and LauncherPlugin.
 - [ ] Run dependency install/project generation if needed.
@@ -78,7 +78,7 @@ Run equivalent checks for your project:
 grep -RInE '{OldProjectName}|{OldWorkspace}|{OldScheme}|{OldSimulator}|{OldRemoteURL}' .claude/rules .claude/agents
 ```
 
-- [ ] No old project tokens remain outside `.claude/rules/PROJECT_CONFIG.md` or intentional project-local docs.
+- [ ] No old project tokens remain outside `{ProjectConfigPath}` or intentional project-local docs.
 - [ ] `lastAvailableWatchedContent` does not appear as communication guidance.
 - [ ] `git add -A` / `git add .` appears only as a warning, not as a recommended command.
 
@@ -90,17 +90,17 @@ grep -RInE '{OldProjectName}|{OldWorkspace}|{OldScheme}|{OldSimulator}|{OldRemot
 - [ ] `ios-orchestrator` coordinates and does not write production Swift itself.
 - [ ] `ios-architect` creates IO contracts before implementation.
 - [ ] `ios-coder` implements after IO exists.
-- [ ] `ios-tester` reads `.claude/rules/QUICK_REF.md` and `.claude/rules/TESTING.md` before tests.
-- [ ] `ios-reviewer` is read-only and uses `.claude/rules/REVIEWER_CHECKLIST.md`.
+- [ ] `ios-tester` reads `QUICK_REF.md` and `TESTING.md` before tests.
+- [ ] `ios-reviewer` is read-only and uses `REVIEWER_CHECKLIST.md`.
 
 ---
 
 ## 9. Acceptance
 
-- [ ] `.claude/rules/QUICK_REF.md` routes every common task.
-- [ ] `.claude/rules/ARCHITECTURE.md` explains the five pillars.
-- [ ] `.claude/rules/SDK_FIRST.md` governs dependency choices.
-- [ ] `.claude/rules/LAYERING.md` separates Domain, Business Application, and Infrastructure & UI.
-- [ ] `.claude/rules/COMMUNICATION.md` preserves event-bus Board → Controller communication.
-- [ ] `.claude/rules/REVIEWER_CHECKLIST.md` can review a PR without loading every spec.
+- [ ] `QUICK_REF.md` routes every common task.
+- [ ] `ARCHITECTURE.md` explains the five pillars.
+- [ ] `SDK_FIRST.md` governs dependency choices.
+- [ ] `LAYERING.md` separates Domain, Business Application, and Infrastructure & UI.
+- [ ] `COMMUNICATION.md` preserves event-bus Board → Controller communication.
+- [ ] `REVIEWER_CHECKLIST.md` can review a PR without loading every spec.
 - [ ] Project builds after first generated module or board.

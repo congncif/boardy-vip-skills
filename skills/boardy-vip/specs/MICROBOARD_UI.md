@@ -3,8 +3,8 @@
 
 > **Load this spec** when creating a Microboard that has a UIViewController.
 > Reference: *Modern large-scale iOS app development* — Micro-services Composable pillar.
-> Template: `.claude/rules/templates/module-template/Templates/Full UI Board.xctemplate/VIP`
-> Companion specs: `.claude/rules/VIP_COMPONENTS.md` (per-component rules), `.claude/rules/EXAMPLES_VIP_BOARD.md` (full skeleton).
+> Template: `{ModuleTemplatesPath}/Templates/Full UI Board.xctemplate/VIP`
+> Companion specs: `VIP_COMPONENTS.md` (per-component rules), `EXAMPLES_VIP_BOARD.md` (full skeleton).
 
 ---
 

@@ -2,7 +2,7 @@
 
 > **Load this spec** when connecting boards, handling outputs, sending commands, or setting up buses.
 > Reference: *Modern large-scale iOS app development* — Micro-services Composable pillar.
-> Companion specs: `.claude/rules/ARCHITECTURE.md` §4 (runtime composition), `.claude/rules/MICROBOARD_UI.md`, `.claude/rules/MICROBOARD_NONUI.md`.
+> Companion specs: `ARCHITECTURE.md` §4 (runtime composition), `MICROBOARD_UI.md`, `MICROBOARD_NONUI.md`.
 
 ---
 

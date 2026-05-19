@@ -3,7 +3,7 @@
 
 > **Load this spec** when implementing ModuleBuilderPlugin, URLOpenerPlugin, LauncherPlugin, or registering a module.
 > Reference: *Modern large-scale iOS app development* — Plugin Architecture pillar.
-> Companion specs: `.claude/rules/ARCHITECTURE.md` §4 (runtime composition), `.claude/rules/EXAMPLES_PLUGIN.md` (concrete skeleton).
+> Companion specs: `ARCHITECTURE.md` §4 (runtime composition), `EXAMPLES_PLUGIN.md` (concrete skeleton).
 
 ---
 

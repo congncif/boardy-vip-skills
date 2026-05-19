@@ -1,7 +1,7 @@
 # Modern Large-Scale App Constitution
 
 This file is the governing constitution for AI work in this project.
-Detailed architecture, framework patterns, code skeletons, and project bindings live in the `boardy-start` skill and companion skills installed at `~/.claude/skills/`.
+Detailed architecture, framework patterns, code skeletons, and project bindings live in the `boardy-vip` skill and companion skills installed at `~/.claude/skills/`.
 
 ---
 
@@ -34,12 +34,12 @@ Default behavior: preserve the model, make the smallest correct change, and veri
 
 Before generating or reviewing code:
 
-1. Invoke `Skill({ skill: "boardy-start" })` first — loads routing table, 10 rules, naming conventions, and key patterns.
-2. Resolve project-wide configuration from `@.claude/rules/PROJECT_CONFIG.md`.
-3. Resolve current topology from `@.claude/rules/PROJECT_STRUCTURE.md` when module/scheme ownership matters.
-4. Follow the routing table in `boardy-start` to read the task-specific spec via `Read` tool from `~/.claude/skills/boardy-start/specs/`.
+1. Invoke `Skill({ skill: "boardy-vip" })` first — loads routing table, 10 rules, naming conventions, and key patterns.
+2. Resolve project-wide configuration from `@.claude/project/PROJECT_CONFIG.md`.
+3. Resolve current topology from `@.claude/project/PROJECT_STRUCTURE.md` when module/scheme ownership matters.
+4. Follow the routing table in `boardy-vip` to read the task-specific spec via `Read` tool from `~/.claude/skills/boardy-vip/specs/`.
 5. For code review tasks, invoke `Skill({ skill: "boardy-review" })`.
-6. For code skeletons, read `~/.claude/skills/boardy-start/specs/EXAMPLES.md` then one matching `EXAMPLES_*.md`.
+6. For code skeletons, read `~/.claude/skills/boardy-vip/specs/EXAMPLES.md` then one matching `EXAMPLES_*.md`.
 
 ---
 
@@ -49,11 +49,11 @@ When instructions conflict:
 
 1. User's explicit current instruction.
 2. This constitution.
-3. `boardy-start` skill routing table and task-specific specs from `~/.claude/skills/boardy-start/specs/`.
+3. `boardy-vip` skill routing table and task-specific specs from `~/.claude/skills/boardy-vip/specs/`.
 4. `boardy-review` skill for review tasks.
-5. `@.claude/rules/PROJECT_CONFIG.md` for project-wide configuration.
-6. `@.claude/rules/PROJECT_STRUCTURE.md` for current topology.
-7. Example specs from `~/.claude/skills/boardy-start/specs/EXAMPLES*.md` for code skeletons.
+5. `@.claude/project/PROJECT_CONFIG.md` for project-wide configuration.
+6. `@.claude/project/PROJECT_STRUCTURE.md` for current topology.
+7. Example specs from `~/.claude/skills/boardy-vip/specs/EXAMPLES*.md` for code skeletons.
 8. Existing code patterns in the target module.
 
 ---
@@ -75,8 +75,8 @@ When instructions conflict:
 
 ## 6. Operating Discipline
 
-- Use `@.claude/rules/PROJECT_CONFIG.md` for build/test/debug commands.
-- Use `@.claude/rules/PROJECT_STRUCTURE.md` for current module/scheme ownership.
+- Use `@.claude/project/PROJECT_CONFIG.md` for build/test/debug commands.
+- Use `@.claude/project/PROJECT_STRUCTURE.md` for current module/scheme ownership.
 - Treat empty or ambiguous verification output as failure.
 - Store AI workflow artifacts only under `.superpowers/`.
 - Stage commits by explicit reviewed file paths only. Never `git add -A` unless explicitly approved.

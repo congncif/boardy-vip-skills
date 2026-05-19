@@ -2,7 +2,7 @@
 
 # LAYERING — Domain-Driven Layered Architecture
 
-> **Purpose**: Define the three-layer cake every feature must follow, what belongs in each layer, and how dependencies must point. Use alongside `.claude/rules/SERVICE_LAYER.md` (concrete code) and `.claude/rules/VIP_COMPONENTS.md` (Business Application detail).
+> **Purpose**: Define the three-layer cake every feature must follow, what belongs in each layer, and how dependencies must point. Use alongside `SERVICE_LAYER.md` (concrete code) and `VIP_COMPONENTS.md` (Business Application detail).
 > Reference: *Modern large-scale iOS app development* — Domain-driven Layered pillar.
 
 ---
@@ -64,7 +64,7 @@ Hard rules:
 |---------|-------|
 | Per-screen flow (VIP) | `Microboards/{Board}/{Board}Board.swift` + `Interactor` + `Presenter` + `ViewController` + `Protocols` (defines `Buildable` protocol) |
 | Use cases | `Services/Application/{Action}UseCase.swift` (protocol + `{Action}UseCaseInteractor` implementation) |
-| Cross-board coordination | Flow / Viewless boards (see `.claude/rules/MICROBOARD_NONUI.md`) |
+| Cross-board coordination | Flow / Viewless boards (see `MICROBOARD_NONUI.md`) |
 
 > **Builder split (important):** the `Buildable` **protocol** lives in this layer (declared in `{Board}Protocols.swift`) — that is what Board holds (`private let builder: {Board}Buildable`). The concrete `{Board}Builder` **struct** that imports REST services, repositories, etc. is the **composition root** and belongs to the Infrastructure & UI layer below. Board never depends on the concrete struct.
 
@@ -141,7 +141,7 @@ When a UseCase or Repository must be reused across modules:
 
 1. The owner module exposes the capability through its **Interface Module** (`{Module}` / IO).
 2. Consumers depend on the Interface Module, never on `{Module}Plugins`.
-3. Cross-module activation goes through `motherboard.serviceMap.mod{Module}.io{Service}` (Pattern A in `.claude/rules/CROSS_MODULE_DI.md`).
+3. Cross-module activation goes through `motherboard.serviceMap.mod{Module}.io{Service}` (Pattern A in `CROSS_MODULE_DI.md`).
 4. Pure protocol-only sharing may use a third pod `{Module}Core` (Pattern B).
 
 Layering and modularity reinforce each other: the Interface Module *is* the Domain protocol surface that consumers compile against.

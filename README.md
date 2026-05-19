@@ -9,9 +9,9 @@ Claude Code skill pack for iOS projects built with [Boardy](https://github.com/c
 | Component | Purpose |
 |-----------|---------|
 | **5 Skills** | Quick-reference guides invokable via Claude Code `Skill` tool |
-| **3 Templates** | Drop-in starting files for a new project's `.claude/rules/` |
+| **Templates** | Drop-in starting files for a new project (`CLAUDE.md`, project bindings, ADR program) |
 | **install.sh** | One-command skill installation to `~/.claude/skills/` |
-| **sync.sh** | Sync architecture specs from a project's `.claude/rules/` into the skill pack |
+| **sync.sh** | Auto-discover & sync architecture + workflow specs from a project root into the skill pack |
 
 ### Skills
 
@@ -28,10 +28,24 @@ Claude Code skill pack for iOS projects built with [Boardy](https://github.com/c
 | File | Copy to |
 |------|---------|
 | `templates/CLAUDE.md` | `{ProjectRoot}/CLAUDE.md` |
-| `templates/PROJECT_CONFIG.md` | `{ProjectRoot}/.claude/rules/PROJECT_CONFIG.md` |
-| `templates/PROJECT_STRUCTURE.md` | `{ProjectRoot}/.claude/rules/PROJECT_STRUCTURE.md` |
+| `templates/PROJECT_CONFIG.md` | `{ProjectRoot}/.claude/project/PROJECT_CONFIG.md` |
+| `templates/PROJECT_STRUCTURE.md` | `{ProjectRoot}/.claude/project/PROJECT_STRUCTURE.md` |
+| `templates/decisions/README.md` | `{ProjectRoot}/.claude/project/decisions/README.md` (ADR program README) |
 
-> **Why only 3 files?** Architecture specs (30 `.md` files) are bundled inside the `boardy-vip` skill at `~/.claude/skills/boardy-vip/specs/`. Skills read them directly via the `Read` tool — no per-project copy needed. This means upgrading skills (`git pull && ./install.sh`) automatically updates all specs everywhere, without touching project files.
+> **Why so few?** Architecture + workflow specs are bundled inside the `boardy-vip` skill at `~/.claude/skills/boardy-vip/specs/`. Skills read them directly via the `Read` tool — no per-project copy needed. Upgrading (`git pull && ./install.sh`) refreshes all specs without touching project files.
+
+### Placeholder convention
+
+Plugin specs are **portable** — they reference project paths through placeholders, not hardcoded strings. Consumer projects bind these placeholders via the bootstrap CLAUDE.md.
+
+| Placeholder | Default | Purpose |
+|---|---|---|
+| `{ProjectConfigPath}` | `.claude/project/PROJECT_CONFIG.md` | Project-wide config (scheme, simulator, commands) |
+| `{ProjectStructurePath}` | `.claude/project/PROJECT_STRUCTURE.md` | Module categories, dependency direction, composition root |
+| `{DecisionsPath}` | `.claude/project/decisions/` | ADRs for structural deviations |
+| `{ModuleTemplatesPath}` | `.claude/rules/templates/module-template/` | Optional module scaffold templates |
+
+Consumers may override these locations; if so, update CLAUDE.md to reflect the actual paths.
 
 ---
 
@@ -128,12 +142,13 @@ Standard iOS app creation in Xcode. Close Xcode after creation.
 
 ```bash
 cd /path/to/your-new-project
-mkdir -p .claude/rules
+mkdir -p .claude/project/decisions
 
-# Project config files (the only files needed per-project)
+# Project bindings (the only files needed per-project)
 cp /path/to/boardy-skills/templates/CLAUDE.md .
-cp /path/to/boardy-skills/templates/PROJECT_CONFIG.md .claude/rules/
-cp /path/to/boardy-skills/templates/PROJECT_STRUCTURE.md .claude/rules/
+cp /path/to/boardy-skills/templates/PROJECT_CONFIG.md .claude/project/
+cp /path/to/boardy-skills/templates/PROJECT_STRUCTURE.md .claude/project/
+cp /path/to/boardy-skills/templates/decisions/README.md .claude/project/decisions/
 ```
 
 Architecture specs are bundled inside `~/.claude/skills/boardy-vip/specs/` (installed in Step 2).
@@ -141,7 +156,7 @@ No spec files need to be copied — skills read them directly from the skill dir
 
 ### 3. Fill PROJECT_CONFIG.md
 
-Open `.claude/rules/PROJECT_CONFIG.md` and replace ALL `{Placeholder}` values:
+Open `.claude/project/PROJECT_CONFIG.md` and replace ALL `{Placeholder}` values:
 
 ```markdown
 | `{ProjectName}` | YourApp |
@@ -156,7 +171,7 @@ Open `.claude/rules/PROJECT_CONFIG.md` and replace ALL `{Placeholder}` values:
 
 Verify no unfilled placeholders remain:
 ```bash
-grep -r '{' .claude/rules/PROJECT_CONFIG.md
+grep -r '{' .claude/project/PROJECT_CONFIG.md
 ```
 
 ### 4. Discover available simulators (if needed)
@@ -205,7 +220,7 @@ xcodebuild build \
 
 ### 7. Update PROJECT_STRUCTURE.md
 
-After creating the first module, update `.claude/rules/PROJECT_STRUCTURE.md` with the scheme and module inventory.
+After creating the first module, update `.claude/project/PROJECT_STRUCTURE.md` with the scheme and module inventory.
 
 ### 8. Create .superpowers/ directory
 
@@ -243,17 +258,22 @@ Skill({ skill: "boardy-setup" })
 
 ## Syncing Specs from a Project
 
-When architecture rules evolve in a project's `.claude/rules/`, use `sync.sh` to pull them into this skill pack.
+When architecture rules or workflow specs evolve in a consumer project, use `sync.sh` to pull them into this skill pack. The script auto-discovers two source directories under the project root:
+
+- `<project>/.ai/specs/` — architecture/pattern specs
+- `<project>/.claude/rules/` — workflow/process specs (QUICK_REF, COMMIT_WORKFLOW, SPEC_SYNC, PLAN_EXECUTION, …)
 
 > **AI-assisted sync:** After running `sync.sh`, ask an AI agent to follow [`SYNC_GUIDE.md`](SYNC_GUIDE.md) to determine which `SKILL.md` files need content updates based on what changed. `sync.sh` only copies files — the guide tells the AI which sections to review and what decisions to make.
 
 ```bash
-# Sync specs only (review diff before committing)
-./sync.sh /path/to/project/.claude/rules/
+# Sync specs from a project root (auto-discovers .ai/specs/ + .claude/rules/)
+./sync.sh /path/to/project
 
 # Sync + bump patch version (1.1.0 → 1.1.1) in all SKILL.md files and CHANGELOG.md
-./sync.sh /path/to/project/.claude/rules/ --bump-version
+./sync.sh /path/to/project --bump-version
 ```
+
+> **Legacy form**: passing a single specs directory still works for backwards compatibility.
 
 After syncing:
 
@@ -275,8 +295,10 @@ git pull && ./install.sh
 
 ### What sync.sh copies
 
-- All `.md` files from the project's `.claude/rules/` directory
+- All `.md` files from `<project>/.ai/specs/` (architecture/pattern specs)
+- All `.md` files from `<project>/.claude/rules/` (workflow/process specs)
 - **Skips** project-specific binding files: `PROJECT_CONFIG.md`, `PROJECT_STRUCTURE.md`, `ADOPTION.md`
+- **Skips** project-specific ADRs under `.claude/project/decisions/` (those are decisions, not portable patterns)
 
 ### What sync.sh does NOT do
 
@@ -300,7 +322,7 @@ Skills and bundled specs are overwritten in place. Claude Code picks up changes 
 
 ### Project-specific files
 
-`PROJECT_CONFIG.md` and `PROJECT_STRUCTURE.md` are yours — never overwritten by install.
+`PROJECT_CONFIG.md`, `PROJECT_STRUCTURE.md`, and the contents of `.claude/project/decisions/` are yours — never overwritten by install.
 
 `CLAUDE.md`: if you've customized it, compare with the template (`diff templates/CLAUDE.md your-project/CLAUDE.md`) and merge improvements manually.
 
@@ -324,6 +346,8 @@ Full specs are bundled at `~/.claude/skills/boardy-vip/specs/` after installatio
 | `SERVICE_LAYER.md` | UseCase/Repository/Domain |
 | `LAYERING.md` | 3-layer dependency rules |
 | `CROSS_MODULE_DI.md` | Cross-module service sharing |
+| `SPEC_SYNC.md` | Sync detection checklist & anti-drift invariants |
+| `PLAN_EXECUTION.md` | Long-plan build verification cadence |
 
 ---
 
@@ -342,7 +366,7 @@ Full specs are bundled at `~/.claude/skills/boardy-vip/specs/` after installatio
 
 See [CHANGELOG.md](CHANGELOG.md) for full version history.
 
-**Latest**: v1.1.0 — renamed `boardy-start` → `boardy-vip`, added `sync.sh`, refactored `boardy-review` to read from spec.
+**Latest**: v1.2.0 — portability refactor (placeholders, project bindings layout), interactive `boardy-setup` bootstrap with SPM/CocoaPods choice, new `SPEC_SYNC.md` + `PLAN_EXECUTION.md` specs, ADR template.
 
 ---
 

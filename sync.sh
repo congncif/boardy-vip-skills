@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
-# sync.sh — Copy architecture specs from a project's .ai/specs/ into skills/boardy-vip/specs/
+# sync.sh — Copy architecture + workflow specs from a project into skills/boardy-vip/specs/
 #
 # Usage:
-#   ./sync.sh /path/to/project/.ai/specs/
-#   ./sync.sh /path/to/project/.ai/specs/ --bump-version
+#   ./sync.sh /path/to/project
+#   ./sync.sh /path/to/project --bump-version
 #
 # Options:
 #   --bump-version   Increment patch version in all SKILL.md frontmatter and CHANGELOG.md
 #
 # What it does:
-#   1. Copies all .md files from the given .ai/specs/ directory to skills/boardy-vip/specs/
-#   2. Skips files that are project-specific bindings (PROJECT_CONFIG.md, PROJECT_STRUCTURE.md, ADOPTION.md)
-#   3. Optionally bumps the patch version (1.1.0 → 1.1.1) across all SKILL.md files
+#   1. Copies architecture specs from <project>/.ai/specs/*.md
+#   2. Copies workflow rules from <project>/.claude/rules/*.md (QUICK_REF, COMMIT_WORKFLOW, SPEC_SYNC, PLAN_EXECUTION, …)
+#   3. Skips project-specific bindings: PROJECT_CONFIG.md, PROJECT_STRUCTURE.md, ADOPTION.md
+#   4. Skips project-specific ADRs under .claude/project/decisions/ (those are decisions, not patterns)
+#   5. Optionally bumps the patch version (1.1.0 → 1.1.1) across all SKILL.md files
 #
-# NOTE: QUICK_REF.md and COMMIT_WORKFLOW.md live in .claude/rules/ (not .ai/specs/).
-# Copy them manually when they change:
-#   cp /path/to/project/.claude/rules/QUICK_REF.md skills/boardy-vip/specs/
-#   cp /path/to/project/.claude/rules/COMMIT_WORKFLOW.md skills/boardy-vip/specs/
+# Backwards-compatible: if the first argument is a directory ending in /.ai/specs or /rules, this
+# script also accepts a direct path to a single specs directory (legacy form).
 
 set -e
 
@@ -24,7 +24,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SPECS_DEST="$SCRIPT_DIR/skills/boardy-vip/specs"
 
 # ── Arg parsing ───────────────────────────────────────────────────────────────
-SOURCE_RULES="${1:-}"
+SOURCE_ARG="${1:-}"
 BUMP_VERSION=false
 
 for arg in "$@"; do
@@ -33,21 +33,35 @@ for arg in "$@"; do
   esac
 done
 
-if [[ -z "$SOURCE_RULES" || "$SOURCE_RULES" == --* ]]; then
-  echo "Usage: ./sync.sh /path/to/project/.ai/specs/ [--bump-version]"
+if [[ -z "$SOURCE_ARG" || "$SOURCE_ARG" == --* ]]; then
+  echo "Usage: ./sync.sh /path/to/project [--bump-version]"
   echo ""
   echo "Example:"
-  echo "  ./sync.sh ~/projects/QuizCombatApp/.ai/specs/"
-  echo "  ./sync.sh ~/projects/QuizCombatApp/.ai/specs/ --bump-version"
+  echo "  ./sync.sh ~/projects/QuizCombatApp"
+  echo "  ./sync.sh ~/projects/QuizCombatApp --bump-version"
   exit 1
 fi
 
-if [[ ! -d "$SOURCE_RULES" ]]; then
-  echo "ERROR: Directory not found: $SOURCE_RULES"
+if [[ ! -d "$SOURCE_ARG" ]]; then
+  echo "ERROR: Directory not found: $SOURCE_ARG"
   exit 1
 fi
 
-# ── Files to skip (project-specific bindings, not architecture specs) ─────────
+# Detect input form: project root vs direct specs dir (legacy)
+SOURCE_DIRS=()
+if [[ -d "$SOURCE_ARG/.ai/specs" ]]; then
+  SOURCE_DIRS+=("$SOURCE_ARG/.ai/specs")
+fi
+if [[ -d "$SOURCE_ARG/.claude/rules" ]]; then
+  SOURCE_DIRS+=("$SOURCE_ARG/.claude/rules")
+fi
+
+# Legacy form: treat the path itself as a specs source
+if [[ ${#SOURCE_DIRS[@]} -eq 0 ]]; then
+  SOURCE_DIRS+=("$SOURCE_ARG")
+fi
+
+# ── Files to skip (project-specific bindings, not architecture/workflow specs) ─
 SKIP_FILES=(
   "PROJECT_CONFIG.md"
   "PROJECT_STRUCTURE.md"
@@ -63,8 +77,10 @@ is_skipped() {
 }
 
 # ── Copy specs ────────────────────────────────────────────────────────────────
-echo "Syncing specs from: $SOURCE_RULES"
-echo "         target:    $SPECS_DEST"
+echo "Syncing specs into: $SPECS_DEST"
+for d in "${SOURCE_DIRS[@]}"; do
+  echo "  source: $d"
+done
 echo ""
 
 mkdir -p "$SPECS_DEST"
@@ -72,21 +88,23 @@ mkdir -p "$SPECS_DEST"
 copied=0
 skipped=0
 
-for src_file in "$SOURCE_RULES"*.md; do
-  [[ -f "$src_file" ]] || continue
+for src_dir in "${SOURCE_DIRS[@]}"; do
+  for src_file in "$src_dir"/*.md; do
+    [[ -f "$src_file" ]] || continue
 
-  filename="$(basename "$src_file")"
+    filename="$(basename "$src_file")"
 
-  if is_skipped "$src_file"; then
-    echo "  skip (project-binding): $filename"
-    ((skipped++)) || true
-    continue
-  fi
+    if is_skipped "$src_file"; then
+      echo "  skip (project-binding): $filename"
+      ((skipped++)) || true
+      continue
+    fi
 
-  dest_file="$SPECS_DEST/$filename"
-  cp "$src_file" "$dest_file"
-  echo "  copied: $filename"
-  ((copied++)) || true
+    dest_file="$SPECS_DEST/$filename"
+    cp "$src_file" "$dest_file"
+    echo "  copied: $filename"
+    ((copied++)) || true
+  done
 done
 
 echo ""
@@ -100,39 +118,32 @@ if [[ "$BUMP_VERSION" == true ]]; then
   for skill_file in "$SCRIPT_DIR/skills"/*/SKILL.md; do
     [[ -f "$skill_file" ]] || continue
 
-    # Extract current version (e.g. "1.1.0")
     current=$(grep -E '^version: ' "$skill_file" | head -1 | sed 's/version: //')
     if [[ -z "$current" ]]; then
       echo "  WARNING: no version field in $skill_file — skipping"
       continue
     fi
 
-    # Parse major.minor.patch and increment patch
     IFS='.' read -r major minor patch <<< "$current"
     new_version="$major.$minor.$((patch + 1))"
 
-    # Replace in file (macOS-compatible sed)
     sed -i '' "s/^version: $current$/version: $new_version/" "$skill_file"
     echo "  $(basename "$(dirname "$skill_file")"): $current → $new_version"
   done
 
-  # Update CHANGELOG — prepend new entry
-  new_version_str=""
-  # Re-read version from boardy-vip skill as canonical
   new_version_str=$(grep -E '^version: ' "$SCRIPT_DIR/skills/boardy-vip/SKILL.md" | head -1 | sed 's/version: //')
   today=$(date +%Y-%m-%d)
 
   changelog="$SCRIPT_DIR/CHANGELOG.md"
   tmp_changelog=$(mktemp)
 
-  # Inject new entry after the first "---" separator
   awk -v ver="$new_version_str" -v date="$today" '
     /^---$/ && !inserted {
       print
       print ""
       print "## " ver " — " date
       print ""
-      print "Spec sync from project rules — run \`./sync.sh ... --bump-version\`."
+      print "Spec sync from project rules — run `./sync.sh ... --bump-version`."
       print ""
       print "- Updated bundled specs in `skills/boardy-vip/specs/`"
       print ""

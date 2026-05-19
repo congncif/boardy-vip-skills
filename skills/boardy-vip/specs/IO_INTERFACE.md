@@ -3,7 +3,7 @@
 
 > **Load this spec** when defining BoardIDs, Input/Output models, Destinations, or ServiceMap for a module or microboard.
 > Reference: *Modern large-scale iOS app development* — Interface Module contract from Modular + Interface Module pillar.
-> Synonym: in PDF terminology this is the **Interface Module**. Companion: `.claude/rules/EXAMPLES_IO.md` (concrete 4-file skeleton).
+> Synonym: in PDF terminology this is the **Interface Module**. Companion: `EXAMPLES_IO.md` (concrete 4-file skeleton).
 
 ---
 

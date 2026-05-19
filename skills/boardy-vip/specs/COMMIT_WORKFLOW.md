@@ -26,7 +26,7 @@
 ### 4. Push Phase (ONLY after approval)
 - Ask user if they want to push
 - **WAIT for explicit approval**
-- Push to configured remote/branch from `.claude/rules/PROJECT_CONFIG.md`: `git push {GitRemote} {BaseBranch}`
+- Push to configured remote/branch from `{ProjectConfigPath}`: `git push {GitRemote} {BaseBranch}`
 
 ## What Counts as Approval
 

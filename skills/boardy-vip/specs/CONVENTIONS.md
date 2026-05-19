@@ -1,7 +1,7 @@
 <!-- Created by claude-opus-4-7 on 2026-05-09 -->
 # CONVENTIONS — Swift Style Companion
 
-> `.claude/rules/QUICK_REF.md` is the canonical architecture and naming index. Load this file only when you need Swift style details not covered by task-specific specs.
+> `QUICK_REF.md` is the canonical architecture and naming index. Load this file only when you need Swift style details not covered by task-specific specs.
 
 ---
 
@@ -9,13 +9,13 @@
 
 | Need | Use |
 |------|-----|
-| Architecture and task routing | `.claude/rules/QUICK_REF.md` |
-| SDK-first dependency decisions | `.claude/rules/SDK_FIRST.md` |
-| Module / IO / BoardID patterns | `.claude/rules/MODULE_CREATION.md`, `.claude/rules/IO_INTERFACE.md` |
-| VIP rules | `.claude/rules/MICROBOARD_UI.md`, `.claude/rules/VIP_COMPONENTS.md` |
-| Non-UI board selection | `.claude/rules/MICROBOARD_NONUI.md` |
-| Service layer and DDD | `.claude/rules/LAYERING.md`, `.claude/rules/SERVICE_LAYER.md` |
-| Code review rules | `.claude/rules/REVIEWER_CHECKLIST.md` |
+| Architecture and task routing | `QUICK_REF.md` |
+| SDK-first dependency decisions | `SDK_FIRST.md` |
+| Module / IO / BoardID patterns | `MODULE_CREATION.md`, `IO_INTERFACE.md` |
+| VIP rules | `MICROBOARD_UI.md`, `VIP_COMPONENTS.md` |
+| Non-UI board selection | `MICROBOARD_NONUI.md` |
+| Service layer and DDD | `LAYERING.md`, `SERVICE_LAYER.md` |
+| Code review rules | `REVIEWER_CHECKLIST.md` |
 
 Do not treat this file as an alternate architecture spec. If content conflicts, the canonical spec above wins.
 

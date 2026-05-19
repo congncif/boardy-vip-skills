@@ -3,7 +3,7 @@
 
 > **Load this spec** when creating Domain models, Use Cases, Repositories, or Infrastructure implementations.
 > Reference: *Modern large-scale iOS app development* — Domain-driven Layered pillar.
-> Companion specs: `.claude/rules/LAYERING.md` (3-layer dependency rule), `.claude/rules/EXAMPLES_SERVICE.md` (concrete skeleton).
+> Companion specs: `LAYERING.md` (3-layer dependency rule), `EXAMPLES_SERVICE.md` (concrete skeleton).
 
 ## Layer Structure
 

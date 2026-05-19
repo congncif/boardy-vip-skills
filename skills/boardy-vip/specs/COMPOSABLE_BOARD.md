@@ -3,7 +3,7 @@
 
 > **Load this spec** when building a screen that hosts multiple boards simultaneously and long-lived — TabBar navigation, section-based lists, or any container where N boards are activated concurrently and each manages its own UI region.
 > Reference: *Modern large-scale iOS app development* — Micro-services Composable pillar.
-> Companion specs: `.claude/rules/MICROBOARD_UI.md` (single VIP board), `.claude/rules/COMMUNICATION.md` (flow patterns).
+> Companion specs: `MICROBOARD_UI.md` (single VIP board), `COMMUNICATION.md` (flow patterns).
 
 ---
 

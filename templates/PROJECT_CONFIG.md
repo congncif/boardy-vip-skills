@@ -1,7 +1,7 @@
 # PROJECT_CONFIG — Project Configuration Contract
 
 > **How to customize**: Replace ALL `{Placeholder}` values in the tables below.
-> Run `grep -r '{' .claude/rules/PROJECT_CONFIG.md` to find unfilled placeholders.
+> Run `grep -r '{' .claude/project/PROJECT_CONFIG.md` to find unfilled placeholders.
 
 ---
 
@@ -26,7 +26,7 @@
 | Concern | Value |
 |---------|-------|
 | Module root | **FILL: submodules/** |
-| Project structure inventory | `@.claude/rules/PROJECT_STRUCTURE.md` |
+| Project structure inventory | `@.claude/project/PROJECT_STRUCTURE.md` |
 | Superpowers workspace root | `.superpowers/` |
 | Plans root | `.superpowers/plans/` |
 | Specs root | `.superpowers/specs/` |
@@ -41,9 +41,9 @@
 
 | Concern | Value |
 |---------|-------|
-| Dependency manager | CocoaPods |
-| App dependency file | `Podfile` |
-| Module dependency files | `*.podspec` |
+| Dependency manager | **FILL: CocoaPods / SwiftPM / Both** |
+| App dependency file | **FILL: `Podfile` (CocoaPods) or `Package.swift` (SwiftPM)** |
+| Module dependency files | **FILL: `*.podspec` (CocoaPods) or `Package.swift` per module (SwiftPM)** |
 | App plugin host | **FILL: SceneDelegate.scene(_:willConnectTo:options:)** |
 | Interface source glob | `IO/**/*.swift` |
 | Implementation source glob | `Sources/**/*.swift` |
@@ -91,6 +91,8 @@ xcodebuild test -workspace {Workspace} -scheme {MainScheme} \
 
 ## 5. Dependency Generation
 
+### CocoaPods path
+
 | Trigger | Action |
 |---------|--------|
 | New module | Add Podfile entries + `pod install` |
@@ -103,6 +105,30 @@ Podfile syntax:
 ```ruby
 pod '{ModuleName}',        :path => '{ModuleRoot}/{ModuleName}'
 pod '{ModuleNamePlugins}', :path => '{ModuleRoot}/{ModuleName}'
+```
+
+### SwiftPM path
+
+| Trigger | Action |
+|---------|--------|
+| New module | Add local `Package.swift` reference in app project (Xcode Package Dependencies → Add Local) |
+| New external dependency | Edit relevant `Package.swift` `.package(url:)` or app-level Package Dependencies |
+| Removed dependency | Same as above |
+| New Swift files | SPM picks them up automatically; rebuild |
+
+Local module `Package.swift` shape:
+```swift
+let package = Package(
+    name: "{ModuleName}",
+    products: [
+        .library(name: "{ModuleName}", targets: ["{ModuleName}"]),
+        .library(name: "{ModuleName}Plugins", targets: ["{ModuleName}Plugins"]),
+    ],
+    targets: [
+        .target(name: "{ModuleName}", path: "IO"),
+        .target(name: "{ModuleName}Plugins", dependencies: ["{ModuleName}"], path: "Sources"),
+    ]
+)
 ```
 
 ---

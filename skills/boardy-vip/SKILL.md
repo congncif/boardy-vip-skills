@@ -1,7 +1,7 @@
 ---
 name: boardy-vip
 description: Use when starting any iOS development task on a Boardy+VIP project — routes to correct spec, provides naming conventions, board communication patterns, and the 10 non-negotiable architecture rules
-version: 1.1.4
+version: 1.2.0
 ---
 
 # Boardy+VIP Quick Reference

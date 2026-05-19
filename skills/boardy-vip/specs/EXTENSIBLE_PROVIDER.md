@@ -3,7 +3,7 @@
 
 > **Load this spec** when a module needs to support multiple interchangeable external providers or frameworks (ad SDKs, payment gateways, analytics backends, map SDKs, auth frameworks, etc.) such that adding a new provider requires only new files — no edits to existing code.
 > Reference: Open/Closed Principle applied to Boardy+VIP plugin composition.
-> Companion specs: `.claude/rules/PER_ACTIVATION_RESOURCES.md` (per-activation lifecycle), `.claude/rules/PLUGINS_INTEGRATION.md` (plugin wiring).
+> Companion specs: `PER_ACTIVATION_RESOURCES.md` (per-activation lifecycle), `PLUGINS_INTEGRATION.md` (plugin wiring).
 
 ---
 
